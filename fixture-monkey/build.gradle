@@ -1,0 +1,35 @@
+plugins {
+    id 'java'
+}
+
+group 'me.snowlight'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation('org.hibernate.validator:hibernate-validator:8.0.0.Final')
+//    implementation 'javax.validation:validation-api:2.0.1.Final'
+//    implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
+//    implementation('org.glassfish:jakarta.el:5.0.0-M1')
+
+    implementation 'org.projectlombok:lombok:1.18.26';
+    annotationProcessor('org.projectlombok:lombok:1.18.26')
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+
+    testImplementation("com.navercorp.fixturemonkey:fixture-monkey-starter:0.5.2")
+    testImplementation("com.navercorp.fixturemonkey:fixture-monkey-jakarta-validation:0.5.2")
+//    testImplementation("com.navercorp.fixturemonkey:fixture-monkey-junit-jupiter:0.5.2")
+//    testImplementation("com.navercorp.fixturemonkey:fixture-monkey-jackson:0.5.2")
+//    testImplementation("com.navercorp.fixturemonkey:fixture-monkey-javax-validation:0.5.2")
+//    testImplementation 'net.jqwik:jqwik:1.5.6'
+
+}
+
+test {
+    useJUnitPlatform()
+}
