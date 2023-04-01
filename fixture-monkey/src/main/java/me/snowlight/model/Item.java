@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 public class Item {
@@ -15,4 +17,7 @@ public class Item {
     @NotBlank
     @Size(min = 20, max = 30)
     private String token;
+
+    @Size(max = 10)
+    private List<ItemOptionGroup> optionGroups;
 }
