@@ -1,13 +1,19 @@
 ## Test Code Study 
 
-1. java-concurrency-basic-01
-2. java-redis
-3. nodejs-knex
-4. nodejs-winston
-5. spring-aws-sqs
-6. spring-fixture-monkey
-7. spring-kafka
-8. spring-kakao-pay (작성중)
-9. spring-mybatis
-10. spring-redis
-11. docker
+### Java
+01. java-concurrency-basic-01
+02. java-redis
+
+### NodeJs
+01. nodejs-knex
+02. nodejs-winston
+
+### Spring
+01. spring-aws-sqs
+02. spring-fixture-monkey
+03. spring-kafka
+04. spring-kakao-pay (작성중)
+05. spring-mybatis
+06. spring-redis
+### Docker
+01. docker
