@@ -15,6 +15,6 @@
 04. spring-kakao-pay (작성중)
 05. spring-mybatis
 06. spring-redis
-07. spring-transaction-isolation (준비중)
+07. spring-transaction-isolation
 ### Docker
 01. docker
