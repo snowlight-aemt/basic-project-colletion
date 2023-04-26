@@ -1,5 +1,6 @@
-package com.example.springkakaopay.controller;
+package me.snowlight.springkakaopayapi.controller;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,6 +21,7 @@ public class PaymentDto {
     @Getter
     @Setter
     @Builder
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class KakaoReadyRequest {
         @Size(min = 1, max = 10)
         private String cid;
@@ -34,20 +36,20 @@ public class PaymentDto {
         @Size(max = 100)
         private String item_code;
         @NotBlank
-        private Integer quantity;
+        private String quantity;
         @NotBlank
-        private Integer total_amount;
+        private String total_amount;
         @NotBlank
-        private Integer tax_free_amount;
-        private Integer vat_amount;
-        private Integer green_deposit;
+        private String tax_free_amount;
+        private String vat_amount;
+        private String green_deposit;
         @Size(min = 1, max = 255)
         private String approval_url;
         @Size(min = 1, max = 255)
         private String cancel_url;
         @Size(min = 1, max = 255)
         private String fail_url;
-        private List<String> available_cards = new ArrayList<>();
+        private List<String> available_cards;
         private String payment_method_type;
         @Max(12)
         private String install_month;

@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### profile
+application-kakao-pay-local.properties
