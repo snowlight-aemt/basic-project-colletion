@@ -65,7 +65,7 @@ public class PaymentApiController {
     public ResponseEntity<String> fail(@RequestParam Map<String, String> params) {
         log.info("fail");
         log.info(params.toString());
-        log.info(this.tid);
+
         return ResponseEntity.ok("OK");
     }
     @GetMapping("/cancel")
@@ -104,6 +104,7 @@ public class PaymentApiController {
         log.info(exchange.getBody().toString());
 
         HashMap<String, String> hashMap = this.objectMapper.readValue(exchange.getBody(), HashMap.class);
+        log.info(hashMap.toString());
 
         return exchange;
     }
