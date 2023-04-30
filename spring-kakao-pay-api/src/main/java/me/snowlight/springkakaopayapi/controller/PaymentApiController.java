@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
@@ -29,6 +30,8 @@ public class PaymentApiController {
     public static final String SUCCESS_URL = "http://localhost:8080/success";
     public static final String FAIL_URL = "http://localhost:8080/fail";
     public static final String CANCEL_URL = "http://localhost:8080/cancel";
+    public static final String PARTNER_ORDER_ID = UUID.randomUUID().toString();
+    public static final String PARTNER_USER_ID = UUID.randomUUID().toString();
 
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
@@ -39,9 +42,10 @@ public class PaymentApiController {
     private String apiKey;
 
     @GetMapping("/success")
-    public ResponseEntity<String> success(@RequestParam("pgToken") String pgToken,
-                                          @RequestParam("partnerOrderId") String partnerOrderId) {
+    public ResponseEntity<String> success(@RequestParam("pg_token") String pgToken,
+                                          @RequestParam("partner_order_id") String partnerOrderId) {
         KakaoPaymentDto.KakaoApproveRequest kakaoApproveRequest = this.map.get(partnerOrderId);
+//        this.map.remove(partnerOrderId);
         kakaoApproveRequest.approve(pgToken);
         MultiValueMap<String, String> params = convertToMultiValueMap(kakaoApproveRequest);
         HttpHeaders headers = getKakaoHttpHeaders();
@@ -60,22 +64,20 @@ public class PaymentApiController {
 
     @GetMapping("/payment")
     public ResponseEntity<KakaoPaymentDto.KakaoResponse> payment() {
-        String partnerOrderId = UUID.randomUUID().toString();
-        String partnerUserId = UUID.randomUUID().toString();
         String itemName = "사과상자";
-        String quantity = "1";
-        String totalAmount = "2200";
-        String taxFreeAmount = "0";
+        Integer quantity = 1;
+        Integer totalAmount = 2200;
+        Integer taxFreeAmount = 0;
 
         KakaoPaymentDto.KakaoReadyRequest readyRequest = KakaoPaymentDto.KakaoReadyRequest.builder()
                                                 .cid(CID)
-                                                .partner_order_id(partnerOrderId)
-                                                .partner_user_id(partnerUserId)
+                                                .partner_order_id(PARTNER_ORDER_ID)
+                                                .partner_user_id(PARTNER_USER_ID)
                                                 .item_name(itemName)
                                                 .quantity(quantity)
                                                 .total_amount(totalAmount)
                                                 .tax_free_amount(taxFreeAmount)
-                                                .approval_url(SUCCESS_URL + "?partner_order_id=" +partnerOrderId)
+                                                .approval_url(SUCCESS_URL + "?partner_order_id=" + PARTNER_ORDER_ID)
                                                 .fail_url(FAIL_URL)
                                                 .cancel_url(CANCEL_URL)
                                                 .build();
@@ -91,14 +93,41 @@ public class PaymentApiController {
         KakaoPaymentDto.KakaoApproveRequest kakaoApproveRequest = KakaoPaymentDto.KakaoApproveRequest.builder()
                                                                                     .cid(CID)
                                                                                     .tid(kakaoResponse.getTid())
-                                                                                    .partner_order_id(partnerOrderId)
-                                                                                    .partner_user_id(partnerUserId)
+                                                                                    .partner_order_id(PARTNER_ORDER_ID)
+                                                                                    .partner_user_id(PARTNER_USER_ID)
+                                                                                    .total_amount(totalAmount)
                                                                                     .build();
 
-        this.map.put(partnerOrderId, kakaoApproveRequest);
+        this.map.put(PARTNER_ORDER_ID, kakaoApproveRequest);
         return ResponseEntity.ok(kakaoResponse);
     }
 
+    @PostMapping("/order")
+    public ResponseEntity<String> cancel() {
+        KakaoPaymentDto.KakaoApproveRequest kakaoApproveRequest = this.map.get(PARTNER_ORDER_ID);
+        KakaoPaymentDto.KakaoCancel kakaoCancel = KakaoPaymentDto.KakaoCancel.builder()
+                .cid(CID)
+                .tid(kakaoApproveRequest.getTid())
+                .cancel_amount(kakaoApproveRequest.getTotal_amount())
+                .cancel_tax_free_amount(0)
+                .build();
+
+        MultiValueMap<String, String> params = convertToMultiValueMap(kakaoCancel);
+        HttpHeaders headers = getKakaoHttpHeaders();
+        HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<>(params, headers);
+
+        ResponseEntity<String> exchange = restTemplate.exchange("https://kapi.kakao.com/v1/payment/cancel", HttpMethod.POST, body, String.class);
+        return exchange;
+    }
+
+    @GetMapping("/order")
+    public ResponseEntity<String> order() {
+        KakaoPaymentDto.KakaoApproveRequest kakaoApproveRequest = this.map.get(PARTNER_ORDER_ID);
+        HttpEntity<Void> body = new HttpEntity<>(null, getKakaoHttpHeaders());
+        ResponseEntity<String> exchange = restTemplate.exchange("https://kapi.kakao.com/v1/payment/order?cid="+ CID +"&tid=" + kakaoApproveRequest.getTid(), HttpMethod.GET, body, String.class);
+
+        return exchange;
+    }
 
     private HttpHeaders getKakaoHttpHeaders() {
         HttpHeaders headers = new HttpHeaders();
