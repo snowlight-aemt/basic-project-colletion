@@ -7,15 +7,20 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
-public class PaymentDto {
+public class KakaoPaymentDto {
     @Getter
     @Setter
     @Builder
-    public static class Request {
-
+    public class KakaoResponse {
+        String tid;
+        String next_redirect_app_url;
+        String next_redirect_mobile_url;
+        String next_redirect_pc_url;
+        String android_app_scheme;
+        String ios_app_scheme;
+        LocalDateTime created_at;
     }
 
     @Getter
@@ -68,5 +73,28 @@ public class PaymentDto {
         private String android_app_scheme;
         private String ios_app_scheme;
         private LocalDateTime created_at;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class KakaoApproveRequest {
+        @NotBlank
+        private String cid;
+        private String cid_secret;
+        @NotBlank
+        private String tid;
+        @NotBlank
+        private String partner_order_id;
+        @NotBlank
+        private String partner_user_id;
+        @NotBlank
+        private String pg_token;
+        private String payload;
+        private Integer total_amount;
+
+        public void approve(String pgToken) {
+            this.pg_token = pgToken;
+        }
     }
 }
