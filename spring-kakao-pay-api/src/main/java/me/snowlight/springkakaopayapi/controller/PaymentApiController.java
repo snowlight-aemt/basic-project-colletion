@@ -62,10 +62,8 @@ public class PaymentApiController {
     }
 
     @GetMapping("/payment/{partner-order-id}")
-    public ResponseEntity<KakaoPaymentDto.KakaoResponse> payment(@PathVariable("partner-order-id") String partnerOrderId) {
-        if (partnerOrderId.isBlank()) {
-            partnerOrderId = UUID.randomUUID().toString();
-        }
+    public ResponseEntity<KakaoPaymentDto.KakaoResponse> payment(
+            @PathVariable("partner-order-id") String partnerOrderId) {
         String partnerUserId = UUID.randomUUID().toString();
         String itemName = "사과상자";
         Integer quantity = 1;
@@ -129,7 +127,12 @@ public class PaymentApiController {
     public ResponseEntity<String> order(@PathVariable("partner-order-id") String partnerOrderId) {
         KakaoPaymentDto.KakaoApproveRequest kakaoApproveRequest = this.map.get(partnerOrderId);
         HttpEntity<Void> body = new HttpEntity<>(null, getKakaoHttpHeaders());
-        ResponseEntity<String> exchange = restTemplate.exchange("https://kapi.kakao.com/v1/payment/order?cid="+ CID +"&tid=" + kakaoApproveRequest.getTid(), HttpMethod.GET, body, String.class);
+
+        String url = "https://kapi.kakao.com/v1/payment/order?cid=" + CID + "&tid=" + kakaoApproveRequest.getTid();
+        ResponseEntity<String> exchange = restTemplate.exchange(url,
+                                                            HttpMethod.GET,
+                                                            body,
+                                                            String.class);
 
         return exchange;
     }
