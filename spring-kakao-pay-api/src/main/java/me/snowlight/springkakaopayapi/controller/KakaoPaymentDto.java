@@ -7,15 +7,39 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
-public class PaymentDto {
+public class KakaoPaymentDto {
+
     @Getter
     @Setter
     @Builder
-    public static class Request {
+    public static class KakaoCancel {
+        @NotBlank
+        String cid;
+        String cid_secret;
+        @NotBlank
+        String tid;
+        @NotBlank
+        Integer cancel_amount;
+        @NotBlank
+        Integer cancel_tax_free_amount;
+        Integer cancel_vat_amount;
+        Integer cancel_available_amount;
+        String payload;
+    }
 
+    @Getter
+    @Setter
+    @Builder
+    public static class KakaoResponse {
+        String tid;
+        String next_redirect_app_url;
+        String next_redirect_mobile_url;
+        String next_redirect_pc_url;
+        String android_app_scheme;
+        String ios_app_scheme;
+        LocalDateTime created_at;
     }
 
     @Getter
@@ -36,13 +60,13 @@ public class PaymentDto {
         @Size(max = 100)
         private String item_code;
         @NotBlank
-        private String quantity;
+        private Integer quantity;
         @NotBlank
-        private String total_amount;
+        private Integer total_amount;
         @NotBlank
-        private String tax_free_amount;
-        private String vat_amount;
-        private String green_deposit;
+        private Integer tax_free_amount;
+        private Integer vat_amount;
+        private Integer green_deposit;
         @Size(min = 1, max = 255)
         private String approval_url;
         @Size(min = 1, max = 255)
@@ -68,5 +92,28 @@ public class PaymentDto {
         private String android_app_scheme;
         private String ios_app_scheme;
         private LocalDateTime created_at;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class KakaoApproveRequest {
+        @NotBlank
+        private String cid;
+        private String cid_secret;
+        @NotBlank
+        private String tid;
+        @NotBlank
+        private String partner_order_id;
+        @NotBlank
+        private String partner_user_id;
+        @NotBlank
+        private String pg_token;
+        private String payload;
+        private Integer total_amount;
+
+        public void approve(String pgToken) {
+            this.pg_token = pgToken;
+        }
     }
 }
