@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div>
+        <br/>
+        <br/>
+        <div>= 지불 페이지 =</div> <br/>
+        <button onclick="but()">Payment Button</button>
+    </div>
+</body>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    function but() {
+        const url = /*[[@{/payment/{id}(id=${partnerOrderId})}]]*/;
+        fetch(url, {})
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data)
+                showPopup(data.next_redirect_pc_url);
+            });
+    }
+
+    function showPopup(kakao_pay_url) {
+        window.open(kakao_pay_url, "kakao_pay_popup", "width=450, height=550, left=100, top=50");
+    }
+    /*]]>*/
+</script>
+</html>

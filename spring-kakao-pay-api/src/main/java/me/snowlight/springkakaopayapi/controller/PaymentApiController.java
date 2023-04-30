@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
@@ -30,8 +31,6 @@ public class PaymentApiController {
     public static final String SUCCESS_URL = "http://localhost:8080/success";
     public static final String FAIL_URL = "http://localhost:8080/fail";
     public static final String CANCEL_URL = "http://localhost:8080/cancel";
-    public static final String PARTNER_ORDER_ID = UUID.randomUUID().toString();
-    public static final String PARTNER_USER_ID = UUID.randomUUID().toString();
 
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
@@ -62,22 +61,28 @@ public class PaymentApiController {
         return ResponseEntity.ok("OK");
     }
 
-    @GetMapping("/payment")
-    public ResponseEntity<KakaoPaymentDto.KakaoResponse> payment() {
+    @GetMapping("/payment/{partner-order-id}")
+    public ResponseEntity<KakaoPaymentDto.KakaoResponse> payment(@PathVariable("partner-order-id") String partnerOrderId) {
+        if (partnerOrderId.isBlank()) {
+            partnerOrderId = UUID.randomUUID().toString();
+        }
+        String partnerUserId = UUID.randomUUID().toString();
         String itemName = "사과상자";
         Integer quantity = 1;
         Integer totalAmount = 2200;
         Integer taxFreeAmount = 0;
 
+        log.info("Partner Order Id : " + partnerOrderId);
+
         KakaoPaymentDto.KakaoReadyRequest readyRequest = KakaoPaymentDto.KakaoReadyRequest.builder()
                                                 .cid(CID)
-                                                .partner_order_id(PARTNER_ORDER_ID)
-                                                .partner_user_id(PARTNER_USER_ID)
+                                                .partner_order_id(partnerOrderId)
+                                                .partner_user_id(partnerUserId)
                                                 .item_name(itemName)
                                                 .quantity(quantity)
                                                 .total_amount(totalAmount)
                                                 .tax_free_amount(taxFreeAmount)
-                                                .approval_url(SUCCESS_URL + "?partner_order_id=" + PARTNER_ORDER_ID)
+                                                .approval_url(SUCCESS_URL + "?partner_order_id=" + partnerOrderId)
                                                 .fail_url(FAIL_URL)
                                                 .cancel_url(CANCEL_URL)
                                                 .build();
@@ -93,18 +98,18 @@ public class PaymentApiController {
         KakaoPaymentDto.KakaoApproveRequest kakaoApproveRequest = KakaoPaymentDto.KakaoApproveRequest.builder()
                                                                                     .cid(CID)
                                                                                     .tid(kakaoResponse.getTid())
-                                                                                    .partner_order_id(PARTNER_ORDER_ID)
-                                                                                    .partner_user_id(PARTNER_USER_ID)
+                                                                                    .partner_order_id(partnerOrderId)
+                                                                                    .partner_user_id(partnerUserId)
                                                                                     .total_amount(totalAmount)
                                                                                     .build();
 
-        this.map.put(PARTNER_ORDER_ID, kakaoApproveRequest);
+        this.map.put(partnerOrderId, kakaoApproveRequest);
         return ResponseEntity.ok(kakaoResponse);
     }
 
-    @PostMapping("/order")
-    public ResponseEntity<String> cancel() {
-        KakaoPaymentDto.KakaoApproveRequest kakaoApproveRequest = this.map.get(PARTNER_ORDER_ID);
+    @PostMapping("/order/{partner-order-id}")
+    public ResponseEntity<String> cancel(@PathVariable("partner-order-id") String partnerOrderId) {
+        KakaoPaymentDto.KakaoApproveRequest kakaoApproveRequest = this.map.get(partnerOrderId);
         KakaoPaymentDto.KakaoCancel kakaoCancel = KakaoPaymentDto.KakaoCancel.builder()
                 .cid(CID)
                 .tid(kakaoApproveRequest.getTid())
@@ -120,9 +125,9 @@ public class PaymentApiController {
         return exchange;
     }
 
-    @GetMapping("/order")
-    public ResponseEntity<String> order() {
-        KakaoPaymentDto.KakaoApproveRequest kakaoApproveRequest = this.map.get(PARTNER_ORDER_ID);
+    @GetMapping("/order/{partner-order-id}")
+    public ResponseEntity<String> order(@PathVariable("partner-order-id") String partnerOrderId) {
+        KakaoPaymentDto.KakaoApproveRequest kakaoApproveRequest = this.map.get(partnerOrderId);
         HttpEntity<Void> body = new HttpEntity<>(null, getKakaoHttpHeaders());
         ResponseEntity<String> exchange = restTemplate.exchange("https://kapi.kakao.com/v1/payment/order?cid="+ CID +"&tid=" + kakaoApproveRequest.getTid(), HttpMethod.GET, body, String.class);
 
