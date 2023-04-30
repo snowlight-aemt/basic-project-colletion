@@ -9,12 +9,29 @@
         <br/>
         <br/>
         <div>= 지불 페이지 =</div> <br/>
-        <button onclick="but()">Payment Button</button>
+        <button onclick="order()">Payment Button</button>
+        <div>= 지불 조회 =</div> <br/>
+        <button onclick="findOrder()">Find Order Button</button>
+
+        <div>
+            <label for="item_name"></label>
+            <input type="text" id="item_name" /> <br/>
+
+            <label for="partner_order_id"></label>
+            <input type="text" id="partner_order_id" /> <br/>
+
+            <label for="partner_user_id"></label>
+            <input type="text" id="partner_user_id" /> <br/>
+
+            <label for="status"></label>
+            <input type="text" id="status" /> <br/>
+        </div>
+
     </div>
 </body>
 <script th:inline="javascript">
     /*<![CDATA[*/
-    function but() {
+    function order() {
         const url = /*[[@{/payment/{id}(id=${partnerOrderId})}]]*/;
         fetch(url, {})
             .then((response) => response.json())
@@ -23,6 +40,26 @@
                 showPopup(data.next_redirect_pc_url);
             });
     }
+
+    function findOrder() {
+        const url = /*[[@{/order/{id}(id=${partnerOrderId})}]]*/;
+        fetch(url, {})
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data)
+
+                const item_name = document.getElementById("item_name");
+                const partner_order_id = document.getElementById("partner_order_id");
+                const partner_user_id = document.getElementById("partner_user_id");
+                const status = document.getElementById("status");
+                item_name.setAttribute("value", data.item_name);
+                partner_order_id.setAttribute("value", data.partner_order_id);
+                partner_user_id.setAttribute("value", data.partner_user_id);
+                status.setAttribute("value", data.status);
+            });
+    }
+
+
 
     function showPopup(kakao_pay_url) {
         window.open(kakao_pay_url, "kakao_pay_popup", "width=450, height=550, left=100, top=50");
