@@ -1,6 +1,8 @@
 # 동시성 
 ## 설정
 ### Mybatis
+* Java 에서 Mybatis 설정 방법
+
 ## 동시성
 ### java.util.concurrent
 * 자바 라이브러리에서 제공하는 `Thread Safe` 를 지원하는 자료구조를 지원

@@ -6,7 +6,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class AppTest {
+public class ConcurrentTest {
     @DisplayName("일반 카운트 실패")
     @RepeatedTest(10)
     void map_fail() throws InterruptedException {
