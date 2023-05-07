@@ -1,12 +1,9 @@
-package config;
+package domain;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import domain.Teams;
+import org.apache.ibatis.annotations.*;
 
-import java.util.Map;
-
+@Mapper
 public interface TeamMapper {
     @Select("select * from teams where id = #{id}")
     public Teams findById(Integer id);

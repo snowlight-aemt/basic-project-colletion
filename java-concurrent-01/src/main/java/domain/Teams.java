@@ -1,4 +1,4 @@
-package config;
+package domain;
 
 public class Teams {
     private Long id;

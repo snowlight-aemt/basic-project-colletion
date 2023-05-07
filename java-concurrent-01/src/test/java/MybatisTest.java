@@ -1,6 +1,6 @@
 import config.MybatisConfig;
-import config.TeamMapper;
-import config.Teams;
+import domain.TeamMapper;
+import domain.Teams;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.jupiter.api.Test;
@@ -26,8 +26,8 @@ public class MybatisTest {
 
     @Test
     void selectTest() {
-        SqlSessionFactory config = MybatisConfig.sqlSessionFactory;
         ExecutorService executorService = Executors.newFixedThreadPool(20);
+        SqlSessionFactory config = MybatisConfig.sqlSessionFactory;
 
         Runnable runnable = () -> {
             {
@@ -37,7 +37,7 @@ public class MybatisTest {
 
                     TeamMapper mapper = session.getMapper(TeamMapper.class);
                     mapper.findById(1);
-//                        Teams teams = session.<Teams>selectOne("config.TeamMapper.findById", 1);
+//                        Teams teams = session.<Teams>selectOne("domain.TeamMapper.findById", 1);
                     Thread.sleep(1000); // Session 존재.
 
                 } catch (InterruptedException e) {

@@ -11,11 +11,6 @@ import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-
-// https://hudi.blog/java-db-connection-pooling/
-// https://www.baeldung.com/java-connection-pooling
-// https://stackoverflow.com/questions/6137683/how-to-find-the-active-number-of-open-database-connections-in-h2-mysql
-// https://passwd.tistory.com/entry/MySQL-Connection-%EC%88%98-%ED%99%95%EC%9D%B8
 public class MybatisConfig {
     public static SqlSessionFactory sqlSessionFactory;
 
@@ -25,7 +20,12 @@ public class MybatisConfig {
                                                     new JdbcTransactionFactory(),
                                                     dataSource);
         Configuration configuration = new Configuration(environment);
-        configuration.addMapper(TeamMapper.class);
+
+        // Mapper 방법
+        // 1 @Mapper
+        configuration.addMappers("domain");
+        // 2 단 건 적용
+        // configuration.addMapper(TeamMapper.class);
 
         sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
     }
