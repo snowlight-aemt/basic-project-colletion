@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+    <property name="LOG_DIR" value="C://logs" />
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${LOG_DIR}/tests.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="SIFT"
+              class="ch.qos.logback.classic.sift.SiftingAppender">
+        <discriminator>
+            <key>id</key>
+            <DefaultValue>DEFAULT</DefaultValue>
+        </discriminator>
+        <sift>
+            <appender name="FILE_ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <file>${LOG_DIR}/${id}/tests2.log</file>
+                <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                    <!-- fileNamePattern -->
+                    <fileNamePattern>${LOG_DIR}/${id}/logFile-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+        <!--            <maxFileSize>2MB</maxFileSize>-->
+                    <maxFileSize>100MB</maxFileSize>
+                    <maxHistory>90</maxHistory>
+                    <totalSizeCap>3GB</totalSizeCap>
+                </rollingPolicy>
+                <encoder>
+                    <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+                </encoder>
+            </appender>
+        </sift>
+    </appender>
+
+
+<!--/foo.%d - default %d는 yyyy-MM-dd입니다. 매일 자정에 새로운 로그 파일로 rollover 합니다.-->
+<!--/foo/%d{yyyy/MM}/bar.txt - 매월 새로운 디렉터리를 만들며 하위에 bar.txt 파일로 rollover 합니다.-->
+<!--/foo/bar.%d{yyyy-MM-dd_HH-mm} - 매 분 새로운 로그 파일로 rollover 합니다.-->
+<!--/foo/bar.%d.gz - 매일 새로운 로그 파일로 rollover 하고, 이전 로그파일은 GZIP으로 압축합니다.-->
+
+  <root level="info">
+    <appender-ref ref="STDOUT" />
+    <appender-ref ref="FILE" />
+  </root>
+
+  <logger name="me.snowlight.springlogback" level="info" additivity="false">
+    <appender-ref ref="SIFT" />
+<!--    <appender-ref ref="FILE" />-->
+  </logger>
+
+</configuration>
