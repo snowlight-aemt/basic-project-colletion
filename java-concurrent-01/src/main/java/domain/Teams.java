@@ -3,6 +3,17 @@ package domain;
 public class Teams {
     private Long id;
     private String name;
+    private String teamToken;
+
+    public Teams() {}
+
+    public Teams(String name) {
+        this.name = name;
+    }
+
+    public String getTeamToken() {
+        return teamToken;
+    }
 
     public Long getId() {
         return id;
@@ -18,5 +29,9 @@ public class Teams {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setTeamToken(String teamToken) {
+        this.teamToken = teamToken;
     }
 }

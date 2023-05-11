@@ -93,4 +93,32 @@ public class ConcurrentTest {
     }
 
 
+    @DisplayName("Array add 실패")
+    @RepeatedTest(10)
+    void list_failed() throws InterruptedException {
+        int count = 1000;
+        CountDownLatch latch = new CountDownLatch(count);
+        ExecutorService executorService = Executors.newFixedThreadPool(20);
+
+        ListFunc func = new ListFunc();
+        for (int i = 0; i < count; i++) {
+            executorService.submit(() -> {
+                try {
+                    String name = Thread.currentThread().getName();
+                    func.workOne();
+                    func.workTwo();
+                } finally {
+                    latch.countDown();
+                }
+            });
+        }
+
+        latch.await();
+        executorService.shutdown();
+
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(count * 2, func.list.size()),
+                () -> Assertions.assertEquals(count * 2, func.count)
+        );
+    }
 }
