@@ -1,49 +1,41 @@
 package com.example.springrediscache;
 
-import org.aspectj.lang.annotation.Before;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.stereotype.Service;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
-@DataJpaTest
+@SpringBootTest
+@EnableCaching
+@ActiveProfiles("test")
 public class UserServiceTest {
     @Autowired
     private UserRepository userRepository;
-
+    @Autowired
     private UserService userService;
 
     @BeforeEach
     public void setUp() {
-        userService = new UserService(userRepository);
+//        userService = new UserService(userRepository);
     }
 
+//    @Transactional
     @Test
     void getUser() {
         Users user = new Users("Test_Name");
         Long id = userService.create(user).getId();
 
-        Users sut = userService.getUser(id);
+        Users first = userService.getUser(id);
+        Users second = userService.getUser(id);
+        Users third = userService.getUser(id);
 
-        Assertions.assertThat(user).isEqualTo(sut);
-    }
-
-    public class UserService {
-        private UserRepository userRepository;
-
-        public UserService(UserRepository userRepository) {
-            this.userRepository = userRepository;
-        }
-
-        public Users create(Users user) {
-            return userRepository.save(user);
-        }
-
-        public Users getUser(Long id) {
-            return userRepository.findById(id).orElseThrow(IllegalArgumentException::new);
-        }
+        Assertions.assertThat(first).isEqualTo(first);
+        Assertions.assertThat(second).isEqualTo(second);
+        Assertions.assertThat(user).isEqualTo(third);
     }
 
 }
