@@ -32,8 +32,8 @@ public class SpringBatchPerformanceApplication implements CommandLineRunner {
             long batchElapsedTime = batchProductService.createProducts(recordCount);
 
             System.out.println(String.join("", Collections.nCopies(50, "-")));
-            System.out.format("%-20s%-5s%-10s%-5s%8sms\n", "Regular inserts", "|", recordCount, "|", regularElapsedTime);
-            System.out.format("%-20s%-5s%-10s%-5s%8sms\n", "Batch inserts", "|", recordCount, "|", batchElapsedTime);
+            System.out.format("%-20s%-5s%-10s%-5s%8sms\n", "단건 저장", "|", recordCount, "|", regularElapsedTime);
+            System.out.format("%-20s%-5s%-10s%-5s%8sms\n", "일괄 저장", "|", recordCount, "|", batchElapsedTime);
             System.out.printf("Total gain: %d %s\n", calculateGainInPercent(regularElapsedTime, batchElapsedTime), "%");
         }
 

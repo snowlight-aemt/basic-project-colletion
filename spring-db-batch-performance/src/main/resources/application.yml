@@ -1,8 +1,6 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:13306/snow?rewriteBatchedStatements=true&profileSQL=true&logger=Slf4JLogger
+    url: jdbc:mysql://localhost:13306/snow
     username: snow
     password: snow
-
-
