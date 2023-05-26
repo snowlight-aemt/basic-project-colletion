@@ -4,14 +4,9 @@ import lombok.RequiredArgsConstructor;
 import me.snowlight.springbatchupdate.domain.Product;
 import me.snowlight.springbatchupdate.domain.ProductRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementSetter;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 

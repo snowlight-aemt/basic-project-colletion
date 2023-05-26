@@ -1,15 +1,12 @@
 package me.snowlight.springbatchupdate.service;
 
-import lombok.RequiredArgsConstructor;
 import me.snowlight.springbatchupdate.domain.Product;
 import me.snowlight.springbatchupdate.domain.ProductRepository;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.Clock;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
