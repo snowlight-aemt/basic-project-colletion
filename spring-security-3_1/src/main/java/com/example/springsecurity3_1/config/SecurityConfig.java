@@ -23,8 +23,8 @@ import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 
-@Configuration
-@RequiredArgsConstructor
+//@Configuration
+//@RequiredArgsConstructor
 public class SecurityConfig {
 //    private final AuthenticationProvider provider;
 
@@ -35,11 +35,11 @@ public class SecurityConfig {
 
 //        new AuthenticationFilter(authenticationManager);
 //        http.authenticationProvider(provider);
-        TokenFilter filter = new TokenFilter("/hello");
+//        TokenFilter filter = new TokenFilter("/hello");
 
-        filter.setAuthenticationManager(authenticationConfiguration.getAuthenticationManager());
-        http.addFilterBefore(filter, AnonymousAuthenticationFilter.class);
-
+//        filter.setAuthenticationManager(authenticationConfiguration.getAuthenticationManager());
+//        http.addFilterBefore(filter, AnonymousAuthenticationFilter.class);
+//
 //        http.securityMatcher("/auth/**").oauth2ResourceServer(oAuth2ResourceServerConfigurer -> {
 //            oAuth2ResourceServerConfigurer.jwt(jwtConfigurer ->
 //                    jwtConfigurer.decoder(NimbusJwtDecoder.withPublicKey(generate("Public Key")).build())

@@ -12,4 +12,9 @@ public class HelloController {
         log.info(" == helrlo == ");
         return "Success";
     }
+
+    @GetMapping("/auth/not-secured")
+    public String fail() {
+        return "fail";
+    }
 }
