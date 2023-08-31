@@ -1,0 +1,18 @@
+springdoc:
+  packages-to-scan: me.snowlight.springswaggerspringdocv1
+#  packages-to-exclude: com.sanha.imgate.domain.auth
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    enabled: true
+    path: /api-docs/json
+    groups:
+      enabled: true
+  cache:
+    disabled: true
+  use-fqn: true
