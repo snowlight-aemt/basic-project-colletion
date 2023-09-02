@@ -1,0 +1,16 @@
+insert into room(id, room_no, room_name, room_type, room_status, room_clean_status) values (1, '101', '스탠드', 'SR', 'Vacant', 'Clean');
+insert into room(id, room_no, room_name, room_type, room_status, room_clean_status) values (2, '201', '스탠드', 'SR', 'Vacant', 'Clean');
+insert into room(id, room_no, room_name, room_type, room_status, room_clean_status) values (3, '301', '스탠드', 'SR', 'Vacant', 'Clean');
+insert into room(id, room_no, room_name, room_type, room_status, room_clean_status) values (4, '401', '스탠드', 'SR', 'Vacant', 'Clean');
+insert into room(id, room_no, room_name, room_type, room_status, room_clean_status) values (5, '501', '스탠드', 'SR', 'Vacant', 'Clean');
+insert into room(id, room_no, room_name, room_type, room_status, room_clean_status) values (6, '601', '스탠드', 'SR', 'Vacant', 'Clean');
+insert into room(id, room_no, room_name, room_type, room_status, room_clean_status) values (7, '701', '스탠드', 'SR', 'Vacant', 'Clean');
+insert into room(id, room_no, room_name, room_type, room_status, room_clean_status) values (8, '801', '스탠드', 'SR', 'Vacant', 'Clean');
+insert into room(id, room_no, room_name, room_type, room_status, room_clean_status) values (9, '901', '스탠드', 'SR', 'Vacant', 'Clean');
+insert into room(id, room_no, room_name, room_type, room_status, room_clean_status) values (10, '1001', '스탠드', 'SR', 'Vacant', 'Clean');
+insert into room(id, room_no, room_name, room_type, room_status, room_clean_status) values (11, '1101', '스탠드', 'SR', 'Vacant', 'Clean');
+insert into room(id, room_no, room_name, room_type, room_status, room_clean_status) values (12, '1201', '스탠드', 'SR', 'Vacant', 'Clean');
+insert into room(id, room_no, room_name, room_type, room_status, room_clean_status) values (13, '1301', '스탠드', 'SR', 'Vacant', 'Clean');
+insert into room(id, room_no, room_name, room_type, room_status, room_clean_status) values (14, '1401', '스탠드', 'SR', 'Vacant', 'Clean');
+insert into room(id, room_no, room_name, room_type, room_status, room_clean_status) values (15, '1501', '스탠드', 'SR', 'Vacant', 'Clean');
+insert into room(id, room_no, room_name, room_type, room_status, room_clean_status) values (16, '1601', '스탠드', 'SR', 'Vacant', 'Clean');
