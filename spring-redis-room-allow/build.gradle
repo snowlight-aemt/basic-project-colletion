@@ -30,16 +30,22 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 
     runtimeOnly 'com.h2database:h2:2.2.220';
-    testRuntimeOnly 'com.h2database:h2:2.2.220';
 //    implementation("p6spy:p6spy:3.9.1")
 //    testImplementation("p6spy:p6spy:3.9.1")
 //    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
 //    testImplementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
 
-
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
+
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    testRuntimeOnly 'com.h2database:h2:2.2.220';
+
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {
