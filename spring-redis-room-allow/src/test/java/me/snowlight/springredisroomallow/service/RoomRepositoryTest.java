@@ -14,14 +14,10 @@ import java.util.List;
 public class RoomRepositoryTest {
     @Autowired
     RoomRepository roomRepository;
-//    @Autowired
-//    EntityManager entityManager;
 
     @Test
     @Transactional
     public void sss() {
-//        List<Room> all = roomRepository.find();
-//        this.entityManager.clear();
         List<Room> all2 = roomRepository.findAll();
 
         Assertions.assertThat(all2).hasSizeGreaterThan(5);

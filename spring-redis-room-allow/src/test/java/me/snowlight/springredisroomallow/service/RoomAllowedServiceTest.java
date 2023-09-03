@@ -1,6 +1,6 @@
 package me.snowlight.springredisroomallow.service;
 
-import me.snowlight.springredisroomallow.TestRoomCount;
+import me.snowlight.springredisroomallow.CountClass;
 import me.snowlight.springredisroomallow.model.Room;
 import me.snowlight.springredisroomallow.model.RoomRepository;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ class RoomAllowedServiceTest {
     @Transactional
     void allow() throws Exception {
         ExecutorService executorService = Executors.newFixedThreadPool(800);
-        int threadCount = 10000;
+        int threadCount = 100000;
         CountDownLatch countDownLatch = new CountDownLatch(threadCount);
         for (int i = 0; i < threadCount; i++) {
             executorService.submit(() -> {
@@ -30,8 +30,9 @@ class RoomAllowedServiceTest {
                             .filter(v -> v.getRoomStatus().equals("Vacant") && v.getRoomCleanStatus().equals("Clean"))
                             .findFirst()
                             .orElseThrow(IllegalAccessError::new);
+                    Thread.sleep(500);
                     try {
-                        this.roomAllowedService. allow(room.getId());
+                        this.roomAllowedService.allow(room.getId());
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
@@ -45,6 +46,6 @@ class RoomAllowedServiceTest {
         }
 
         countDownLatch.await();
-        org.assertj.core.api.Assertions.assertThat(TestRoomCount.getCount()).isEqualTo(50);
+        org.assertj.core.api.Assertions.assertThat(CountClass.getCount()).isEqualTo(50);
     }
 }
