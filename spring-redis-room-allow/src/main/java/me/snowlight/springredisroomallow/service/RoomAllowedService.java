@@ -7,14 +7,14 @@ import me.snowlight.springredisroomallow.model.Room;
 import me.snowlight.springredisroomallow.model.RoomHistory;
 import me.snowlight.springredisroomallow.model.RoomHistoryRepository;
 import me.snowlight.springredisroomallow.model.RoomRepository;
-import me.snowlight.springredisroomallow.repository.RoomOccupancyRepository;
+import me.snowlight.springredisroomallow.repository.RoomLettuceRepository;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class RoomAllowedService {
-    private final RoomOccupancyRepository roomOccupancyRepository;
+    private final RoomLettuceRepository roomOccupancyRepository;
 
     private final RoomRepository roomRepository;
     private final RoomHistoryRepository roomHistoryRepository;

@@ -11,9 +11,9 @@ spring:
 #    url: jdbc:h2:mem:test-room-allow
 #    username: sa
 #    password:
-#logging:
-#  level:
-#    sql: debug
+logging:
+  level:
+    sql: debug
 
 val:
   env: dev

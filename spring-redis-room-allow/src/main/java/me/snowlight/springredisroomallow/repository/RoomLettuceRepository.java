@@ -8,7 +8,7 @@ import java.time.Duration;
 
 @Repository
 @RequiredArgsConstructor
-public class RoomOccupancyRepository {
+public class RoomLettuceRepository {
     private final RedisTemplate<String, String> redisTemplate;
 
     public Boolean lock(Long key) {
