@@ -1,16 +1,16 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
     defer-datasource-initialization: true
   sql:
     init:
       mode: always
-#  datasource:
-#    driver-class-name: org.h2.Driver
-#    url: jdbc:h2:mem:test-room-allow
-#    username: sa
-#    password:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:tcp://localhost/~/Study/Tools/h2_db/test-room-allow
+    username: sa
+    password:
 logging:
   level:
     sql: debug

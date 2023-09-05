@@ -1,5 +1,7 @@
 package me.snowlight.springredisroomallow.model;
 
-public interface RoomHistoryRepository {
-    public void save(RoomHistory roomHistory);
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface RoomHistoryRepository extends JpaRepository<RoomHistory, Long> {
+//    void save(RoomHistory roomHistory);
 }

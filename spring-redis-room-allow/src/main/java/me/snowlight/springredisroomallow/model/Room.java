@@ -1,19 +1,17 @@
 package me.snowlight.springredisroomallow.model;
 
-//import jakarta.persistence.Entity;
-//import jakarta.persistence.GeneratedValue;
-//import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import lombok.*;
 
-//@Entity
+@Entity
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class Room {
-//    @GeneratedValue
-//    @Id
+    @GeneratedValue
+    @Id
     private Long id;
     private String roomNo;
 
