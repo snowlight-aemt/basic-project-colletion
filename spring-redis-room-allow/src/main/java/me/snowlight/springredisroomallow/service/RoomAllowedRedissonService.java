@@ -27,9 +27,8 @@ public class RoomAllowedRedissonService {
     public void  allow(Long roomId) throws InterruptedException {
         RLock lock = redissonClient.getLock(roomId.toString());
 
-        boolean available = lock.tryLock(15, 1, TimeUnit.SECONDS);
-
         try {
+            boolean available = lock.tryLock(15, 1, TimeUnit.SECONDS);
             if (!available) {
 //                log.info("lock 획득 실패");
                 return;
