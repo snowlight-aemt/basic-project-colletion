@@ -24,11 +24,12 @@ public class LogController {
 
     @GetMapping("/b")
     public String logB() {
-        MDC.put("id", "B");
-        log.info(LocalDateTime.now().toString());
+//        MDC.put("id", "B");
+//        log.info(LocalDateTime.now().toString());
+        log.debug("info B");
         log.info("info B");
-        log.debug("debug");
-        MDC.clear();
+//        log.debug("debug");
+//        MDC.clear();
         return "OK B";
     }
 

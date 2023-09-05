@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder>
-      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-    </encoder>
-  </appender>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+          <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} ---- %msg%n</pattern>
+        </encoder>
+    </appender>
 
     <property name="LOG_DIR" value="C://logs" />
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
@@ -45,14 +45,21 @@
 <!--/foo/bar.%d{yyyy-MM-dd_HH-mm} - 매 분 새로운 로그 파일로 rollover 합니다.-->
 <!--/foo/bar.%d.gz - 매일 새로운 로그 파일로 rollover 하고, 이전 로그파일은 GZIP으로 압축합니다.-->
 
-  <root level="info">
-    <appender-ref ref="STDOUT" />
-    <appender-ref ref="FILE" />
-  </root>
+    <root level="error">
+        <appender-ref ref="STDOUT" />
+    </root>
 
-  <logger name="me.snowlight.springlogback" level="info" additivity="false">
-    <appender-ref ref="SIFT" />
-<!--    <appender-ref ref="FILE" />-->
-  </logger>
+  <logger name="me.snowlight.springlogback" level="info" additivity="true"/>
+  <logger name="me.snowlight.springlogback.helloController" level="debug" additivity="true"/>
+  <logger name="me.snowlight.springlogback.configController" level="error" additivity="true"/>
 
+<!--# https://logback.qos.ch/manual/configuration.html#rootElement-->
+<!--
+name 을 상속 경로 사용
+ * additivity 상속을 여부
+ * appender-ref
+
+요청 ->  me.snowlight.springlogback.helloController -> me.snowlight.springlogback -> root (appender-ref)
+
+-->
 </configuration>

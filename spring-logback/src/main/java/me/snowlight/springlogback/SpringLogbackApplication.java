@@ -9,8 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringLogbackApplication {
 
 	public static void main(String[] args) {
-//		log.info("info");
-//        log.debug("debug");
 		SpringApplication.run(SpringLogbackApplication.class, args);
 	}
 
