@@ -24,4 +24,4 @@ Content-Type: application/json
 
 
 ### DELETE Todo 삭제
-DELETE localhost:8080/api/todos/2
+DELETE localhost:8080/api/todos/1
