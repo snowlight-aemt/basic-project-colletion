@@ -3,6 +3,12 @@ plugins {
 	id("org.springframework.boot") version "3.2.0"
 	id("io.spring.dependency-management") version "1.1.4"
 	kotlin("jvm") version "1.9.21"
+	id("org.jetbrains.kotlin.plugin.allopen") version "1.9.21"
+}
+
+// 명시한 어노테이션이 붙어 있는 모든 클래스에 open 를 붙여준다. (상속)
+allOpen {
+	annotations("org.springframework.boot.autoconfigure.SpringBootApplication")
 }
 
 group = "me.snowlight"
