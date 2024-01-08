@@ -16,8 +16,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-@Configuration
-@EnableWebSecurity
+//@Configuration
+//@EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig_2 {
     private final ApiKeyAuthenticationEntryPoint authenticationEntryPoint;
@@ -31,20 +31,20 @@ public class SecurityConfig_2 {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationConfiguration authenticationConfiguration) throws Exception {
         http.csrf(CsrfConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
-                .formLogin(FormLoginConfigurer::disable)
-                .httpBasic(HttpBasicConfigurer::disable);
-//                    .httpBasic(Customizer.withDefaults());
-//            .httpBasic(HttpBasicConfigurer::disable);
+//                .formLogin(FormLoginConfigurer::disable)
+//                .httpBasic(HttpBasicConfigurer::disable)
+//                    .httpBasic(Customizer.withDefaults())
+//            .httpBasic(HttpBasicConfigurer::disable)
+        ;
+//        http.exceptionHandling(v -> {
+//            v.authenticationEntryPoint(authenticationEntryPoint);
+//        });
 
-        http.exceptionHandling(v -> {
-            v.authenticationEntryPoint(authenticationEntryPoint);
-        });
-
-        http.authorizeHttpRequests(customizer ->
-                        customizer.requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
-                                .anyRequest().authenticated()
-        );
-        http.addFilterBefore(new TokenFilter(authenticationConfiguration.getAuthenticationManager()), BasicAuthenticationFilter.class);
+//        http.authorizeHttpRequests(customizer ->
+//                        customizer.requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
+//                                .anyRequest().authenticated()
+//        );
+//        http.addFilterBefore(new TokenFilter(authenticationConfiguration.getAuthenticationManager()), BasicAuthenticationFilter.class);
 
         return http.build();
     }

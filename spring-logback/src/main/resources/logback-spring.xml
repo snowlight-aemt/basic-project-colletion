@@ -2,38 +2,38 @@
 <configuration>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-          <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} ---- %msg%n</pattern>
+<!--            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %kvp - %msg%n</pattern>-->
+          <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-4relative] [%thread] %-5level %logger{35} - %msg%n</pattern>
+<!--          <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %kvp - %.-4000msg%n</pattern>-->
         </encoder>
     </appender>
 
-    <property name="LOG_DIR" value="C://logs" />
+    <property name="LOG_DIR" value="./log" />
+
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>${LOG_DIR}/tests.log</file>
+        <file>${LOG_DIR}/test.log</file>
         <append>true</append>
         <encoder>
-            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-4relative] [%thread] %-5level %logger{35} - %.-300msg%n</pattern>
         </encoder>
     </appender>
 
-    <appender name="SIFT"
-              class="ch.qos.logback.classic.sift.SiftingAppender">
+    <appender name="SPECIFICITY_REQUEST" class="ch.qos.logback.classic.sift.SiftingAppender">
         <discriminator>
             <key>id</key>
             <DefaultValue>DEFAULT</DefaultValue>
         </discriminator>
         <sift>
             <appender name="FILE_ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
-                <file>${LOG_DIR}/${id}/tests2.log</file>
+                <file>${LOG_DIR}/${id}/specificity.log</file>
                 <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                    <!-- fileNamePattern -->
-                    <fileNamePattern>${LOG_DIR}/${id}/logFile-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
-        <!--            <maxFileSize>2MB</maxFileSize>-->
+                    <fileNamePattern>${LOG_DIR}/${id}/logFile-%d{yyyy-MM-dd_HH-mm}.%i.log.gz</fileNamePattern>
                     <maxFileSize>100MB</maxFileSize>
-                    <maxHistory>90</maxHistory>
+                    <maxHistory>2</maxHistory>
                     <totalSizeCap>3GB</totalSizeCap>
                 </rollingPolicy>
                 <encoder>
-                    <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+                    <pattern>[%thread] %-5level %logger{35} - %msg%n</pattern>
                 </encoder>
             </appender>
         </sift>
@@ -47,11 +47,24 @@
 
     <root level="error">
         <appender-ref ref="STDOUT" />
+<!--        <appender-ref ref="SPECIFICITY_REQUEST" />-->
     </root>
+    <logger name="me.snowlight.springlogback" level="info">
+        <appender-ref ref="STDOUT" />
+    </logger>
+<!--    <logger name="me.snowlight.springlogback.helloController" level="debug"/>-->
+    <logger name="me.snowlight.springlogback.configController" level="debug">
+        <appender-ref ref="FILE" />
+    </logger>
 
-  <logger name="me.snowlight.springlogback" level="info" additivity="true"/>
-  <logger name="me.snowlight.springlogback.helloController" level="debug" additivity="true"/>
-  <logger name="me.snowlight.springlogback.configController" level="error" additivity="true"/>
+    <logger name="me.snowlight.springlogback.testController" level="debug" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="me.snowlight.springlogback.helloController" level="debug" additivity="false">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="SPECIFICITY_REQUEST" />
+    </logger>
 
 <!--# https://logback.qos.ch/manual/configuration.html#rootElement-->
 <!--
