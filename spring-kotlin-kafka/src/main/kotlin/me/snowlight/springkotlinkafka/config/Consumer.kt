@@ -5,6 +5,7 @@ import mu.KotlinLogging
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties
+import org.springframework.context.annotation.Profile
 import org.springframework.kafka.core.reactive.ReactiveKafkaConsumerTemplate
 import org.springframework.stereotype.Service
 import reactor.kafka.receiver.ReceiverOptions
@@ -12,6 +13,7 @@ import reactor.kafka.receiver.ReceiverOptions
 private val logger = KotlinLogging.logger {  }
 
 @Service
+@Profile("consumer")
 class Consumer(
     private val properties: KafkaProperties,
 ) {

@@ -1,5 +1,6 @@
 package me.snowlight.springkotlinkafka
 
+import kotlinx.coroutines.runBlocking
 import me.snowlight.springkotlinkafka.config.Consumer
 import me.snowlight.springkotlinkafka.producer.TestProducer
 import mu.KotlinLogging
@@ -31,10 +32,12 @@ class SpringKotlinKafkaApplication(
                 logger.debug { "[reactive kafka] get message : $it" }
             }
         }
+
         if (profile == "producer") {
             val testProducer = applicationContext.getBean("testProducer", TestProducer::class) as TestProducer
-
-            testProducer.send("test", "test message")
+            runBlocking {
+                testProducer.send("test", "test message")
+            }
         }
     }
 }
