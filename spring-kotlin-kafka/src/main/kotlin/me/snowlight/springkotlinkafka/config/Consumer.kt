@@ -17,6 +17,8 @@ private val logger = KotlinLogging.logger {  }
 class Consumer(
     private val properties: KafkaProperties,
 ) {
+    private val set = HashSet<String>()
+
     fun consumer(topic: String, groupId: String, runner: (recode: ConsumerRecord<String, String>) -> Unit) {
         properties.buildConsumerProperties().let { prop ->
                 prop[ConsumerConfig.GROUP_ID_CONFIG] = groupId
@@ -28,10 +30,18 @@ class Consumer(
             }.let { consumer ->
                 consumer.receiveAutoAck().flatMap { recode ->
                     mono {
+                        val key = getKey(recode, groupId)
+                        if (!set.contains(key)) {
 //                        logger.debug { "$recode" }
-                        runner.invoke(recode)
+                            set.add(key)
+                            runner.invoke(recode)
+                        }
                     }
                 }.subscribe()
             }
+    }
+
+    fun getKey(recode: ConsumerRecord<String, String>, groupId: String): String {
+        return "kafka-consumer/${recode.topic()}/${recode.partition()}/${groupId}/${recode.offset()}"
     }
 }

@@ -2,6 +2,7 @@ package me.snowlight.springkotlinkafka.producer
 
 import kotlinx.coroutines.reactor.awaitSingle
 import mu.KotlinLogging
+import org.apache.kafka.clients.producer.ProducerConfig
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -33,7 +34,11 @@ class ReactiveKafkaInitializer {
     @Bean
     fun reactiveProducer(properties: KafkaProperties): ReactiveKafkaProducerTemplate<String, String> {
         return properties.buildProducerProperties()
-            .let { prop -> SenderOptions.create<String, String>(prop)}
+            .let { prop ->
+                // LEARN Idempotence Producer 세팅
+                prop[ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG] = true
+                SenderOptions.create<String, String>(prop)
+            }
             .let { option -> ReactiveKafkaProducerTemplate(option) }
     }
 }
