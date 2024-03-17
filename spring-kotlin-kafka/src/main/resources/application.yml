@@ -1,0 +1,48 @@
+spring:
+  profiles:
+    group:
+      consumer:
+---
+spring:
+  output:
+    ansi:
+      enabled: always
+  application:
+    name: spring-kotlin-kafka
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      auto-offset-reset: earliest
+      group-id: sample
+logging:
+  level:
+    me.snowlight: debug
+    org.springframework.r2dbc.core: debug
+    org.springframework.r2dbc.connection: debug
+    org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler: off
+    org.springframework.http.HttpLogging: off
+    org.springframework.web.HttpLogging: off
+  pattern:
+    console: "%d{HH:mm:ss.SSS}|%highlight(%-5level)|%X{txid:-}|%green(%t)|%logger|%blue(\\(%F:%L\\))|%msg%n"
+---
+spring:
+  config:
+    activate:
+      on-profile: consumer
+  application:
+    name: spring-kotlin-kafka-consumer
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      auto-offset-reset: earliest
+server:
+  port: 8081
+---
+spring:
+  config:
+    activate:
+      on-profile: producer
+  application:
+    name: spring-kotlin-kafka-producer
+  kafka:
+    bootstrap-servers: localhost:9092
