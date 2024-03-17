@@ -19,6 +19,7 @@ repositories {
 }
 
 dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
     implementation("io.projectreactor.kafka:reactor-kafka:1.3.23")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 
