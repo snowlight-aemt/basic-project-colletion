@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service
 
 private val logger = KotlinLogging.logger {  }
 
-@Service
-@Profile("consumer")
+//@Service
+//@Profile("consumer")
 class TestConsumer {
     @KafkaListener(topics = ["test"], groupId = "A")
     fun consumerA(message: String) {
