@@ -8,6 +8,8 @@ spring:
     bootstrap-servers: localhost:9092
     consumer:
       auto-offset-reset: earliest
+  profiles:
+    default: payment-consumer
 #      group-id: sample
 logging:
   level:
@@ -19,6 +21,28 @@ logging:
     org.springframework.web.HttpLogging: off
   pattern:
     console: "%d{HH:mm:ss.SSS}|%highlight(%-5level)|%X{txid:-}|%green(%t)|%logger|%blue(\\(%F:%L\\))|%msg%n"
+---
+spring:
+  config:
+    activate:
+      on-profile: payment-consumer
+  application:
+    name: payment-consumer
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      auto-offset-reset: earliest
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  main:
+    web-application-type: none
+#server:
+#  port: 8082
+api:
+  history:
+    domain: http://localhost:8081
 ---
 spring:
   config:
