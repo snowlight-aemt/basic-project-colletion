@@ -17,14 +17,14 @@ import kotlin.time.toJavaDuration
 private val logger = KotlinLogging.logger {  }
 
 @Service
-@Profile("consumer")
+@Profile(value = ["payment-consumer", "consumer"])
 class Consumer(
     private val properties: KafkaProperties,
     private val redisTemplate: ReactiveRedisTemplate<Any, Any>,
 ) {
     private val ops = redisTemplate.opsForValue()
 
-    fun consumer(topic: String, groupId: String, runner: (recode: ConsumerRecord<String, String>) -> Unit) {
+    fun consumer(topic: String, groupId: String, runner: suspend (recode: ConsumerRecord<String, String>) -> Unit) {
         properties.buildConsumerProperties().let { prop ->
                 prop[ConsumerConfig.GROUP_ID_CONFIG] = groupId
                 ReceiverOptions.create<String, String>(prop)

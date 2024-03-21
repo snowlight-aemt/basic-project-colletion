@@ -19,6 +19,10 @@ repositories {
 }
 
 dependencies {
+    implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
     implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
     implementation("io.projectreactor.kafka:reactor-kafka:1.3.23")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
