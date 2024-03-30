@@ -1,0 +1,4 @@
+sharding:
+  friend:
+    strategy: MODULAR
+    mod: 2

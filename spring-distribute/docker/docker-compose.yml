@@ -1,0 +1,55 @@
+version: "3.8"
+name: distribute-db
+services:
+  master-1:
+    image: mysql
+    container_name: m-1
+    restart: unless-stopped
+    ports:
+     - "3316:3316"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: friend
+      MYSQL_TCP_PORT: 3316
+    volumes:
+      - ./init/db1/:/docker-entrypoint-initdb.d
+  slave-1-1:
+    image: mysql
+    container_name: s-1-1
+    restart: unless-stopped
+    depends_on:
+     - master-1
+    ports:
+     - "3317:3317"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: friend
+      MYSQL_TCP_PORT: 3317
+    volumes:
+      - ./init/db1/:/docker-entrypoint-initdb.d
+  master-2:
+    image: mysql
+    container_name: m-2
+    restart: unless-stopped
+    ports:
+     - "3326:3326"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: friend
+      MYSQL_TCP_PORT: 3326
+    volumes:
+      - ./init/db2/:/docker-entrypoint-initdb.d
+  slave-2-1:
+    image: mysql
+    container_name: s-2-1
+    restart: unless-stopped
+    depends_on:
+     - master-2
+    ports:
+     - "3327:3327"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: friend
+      MYSQL_TCP_PORT: 3327
+    volumes:
+      - ./init/db2/:/docker-entrypoint-initdb.d

@@ -1,0 +1,10 @@
+sharding:
+  friend:
+    strategy: RANGE
+    rules:
+      - shard_no: 0
+        range_min: 0
+        range_max: 1000
+      - shard_no: 1
+        range_min: 1001
+        range_max: 9223372036854775807
