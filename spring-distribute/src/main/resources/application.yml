@@ -1,3 +1,34 @@
 spring:
   application:
     name: spring-distribute
+
+
+datasource:
+  friend:
+    shards:
+      - username: user1
+        password: user1
+        master:
+          name: master-friend-1
+          url: jdbc:mysql://localhost:3316/friend
+        slaves:
+          - name: slave-friend-1-1
+            url: jdbc:mysql://localhost:3317/friend
+      - username: user2
+        password: user2
+        master:
+          name: master-friend-2
+          url: jdbc:mysql://localhost:3326/friend
+        slaves:
+          - name: slave-friend-2-1
+            url: jdbc:mysql://localhost:3327/friend
+sharding:
+  friend:
+    strategy: RANGE
+    rules:
+      - shard_no: 0
+        range_min: 0
+        range_max: 1000
+      - shard_no: 1
+        range_min: 1001
+        range_max: 9223372036854775807
