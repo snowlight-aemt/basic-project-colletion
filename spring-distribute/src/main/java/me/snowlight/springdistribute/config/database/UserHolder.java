@@ -6,11 +6,17 @@ import lombok.Getter;
 public class UserHolder {
     private static final ThreadLocal<Context> userContext = new ThreadLocal<>();
 
-    static {
-        userContext.set(new Context());
-    }
+//    static {
+//        userContext.set(new Context(new Sharding()));
+//    }
 
     private static Context getContext() {
+        if (userContext.get() == null) {
+            Context context = new Context();
+            context.setSharding(new Sharding(ShardingTarget.FRIEND, 0));
+            userContext.set(context);
+        }
+
         return userContext.get();
     }
 

@@ -2,8 +2,12 @@ package me.snowlight.springdistribute.config.database;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DelegatingDataSource;
@@ -17,12 +21,18 @@ import java.util.Map;
 //@EnableJpaRepositories
 @ConfigurationProperties(prefix = "datasource")
 @Setter
+//@RequiredArgsConstructor
+//@NoArgsConstructor
 public class FriendConfig {
     private ShardingDataSourceProperty friend;
+    @Autowired
+    private FriendShardingConfig sharding;
     public static final String SHARD_DELIMITER = "-";
 
     @Bean
     public DataSource friendDataSource() {
+        ShardingConfig.getShardingPropertyMap().put(ShardingTarget.FRIEND, sharding.getFriend());
+
         DataSourceRouter router = new DataSourceRouter();
         Map<Object, Object> dataSourceMap = new LinkedHashMap<>();
 

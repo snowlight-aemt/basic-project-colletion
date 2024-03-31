@@ -1,6 +1,11 @@
 spring:
   application:
     name: spring-distribute
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+
 
 
 datasource:
