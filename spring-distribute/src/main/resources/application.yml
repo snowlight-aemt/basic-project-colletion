@@ -6,8 +6,6 @@ spring:
       ddl-auto: create-drop
     show-sql: true
 
-
-
 datasource:
   friend:
     shards:
@@ -27,13 +25,19 @@ datasource:
         slaves:
           - name: slave-friend-2-1
             url: jdbc:mysql://localhost:3327/friend
+
+#sharding:
+#  friend:
+#    strategy: RANGE
+#    rules:
+#      - shard_no: 0
+#        range_min: 0
+#        range_max: 1000
+#      - shard_no: 1
+#        range_min: 1001
+#        range_max: 9223372036854775807
+
 sharding:
   friend:
-    strategy: RANGE
-    rules:
-      - shard_no: 0
-        range_min: 0
-        range_max: 1000
-      - shard_no: 1
-        range_min: 1001
-        range_max: 9223372036854775807
+    strategy: MODULAR
+    mod: 2

@@ -6,18 +6,19 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 
 @Slf4j
 @Setter
 @Getter
 @Configuration
+//@Order(Integer.MIN_VALUE)
 @ConfigurationProperties(prefix = "sharding")
 public class FriendShardingConfig {
     private ShardingProperty friend;
 
     @PostConstruct
     public void init() {
-        log.info("SYSTEM - POST CONSTRUCT");
-//        ShardingConfig.getShardingPropertyMap().put(ShardingTarget.FRIEND, friend);
+        ShardingConfig.getShardingPropertyMap().put(ShardingTarget.FRIEND, friend);
     }
 }
