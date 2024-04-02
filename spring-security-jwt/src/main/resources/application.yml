@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: spring-security-jwt
+logging:
+  level:
+    me.snowlight: debug
