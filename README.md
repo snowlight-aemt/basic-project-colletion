@@ -12,6 +12,7 @@
 10. [spring-kotlin-kafka](https://github.com/snowlight-aemt/basic-project-colletion/tree/master/spring-kotlin-kafka)
 11. [spring-kotlin-websocket](https://github.com/snowlight-aemt/basic-project-colletion/tree/master/spring-kotlin-websocket)
 12. [spring-kotlin-stomp](https://github.com/snowlight-aemt/basic-project-colletion/tree/master/spring-kotlin-stomp)
+13. [spring-security-jwt](https://github.com/snowlight-aemt/basic-project-colletion/tree/master/spring-security-jwt) - Security JWT Provider
 
 ### Docker
 1. docker
