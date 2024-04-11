@@ -1,18 +1,11 @@
 package me.snowlight.codingtestspringdaomybatis;
 
-import me.snowlight.codingtestspringdaomybatis.model.TestMapper;
-import org.junit.jupiter.api.Assertions;
+import me.snowlight.codingtestspringdaomybatis.config.AppConfig;
+import me.snowlight.codingtestspringdaomybatis.model.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
-
-import java.util.List;
-import java.util.Map;
 
 //@ContextConfiguration(classes = {AppConfig.class, MemberService.class})
 //@ContextConfiguration(classes = CodingTestSpringDaoMybatisApplication.class)
@@ -25,7 +18,7 @@ import java.util.Map;
 //@ActiveProfiles("test")
 //@TestPropertySource(properties = {"spring.config.location=classpath:application-test.yml"})
 //@TestPropertySource(properties = {"spring.config.location=classpath:application-test.yml"})
-@ContextConfiguration(classes = {CodingTestSpringDaoMybatisApplication.class, AppConfig.class, TestMapper.class})
+@ContextConfiguration(classes = {CodingTestSpringDaoMybatisApplication.class, AppConfig.class, MemberRepository.class})
 @ActiveProfiles("test")
 //@TestPropertySource(locations ={"classpath:application-test.yml"})
 class CodingTestSpringDaoMybatisApplicationTests {
@@ -34,13 +27,13 @@ class CodingTestSpringDaoMybatisApplicationTests {
 //    MemberService memberService;
 
     @Autowired
-    TestMapper testMapper;
+    MemberRepository memberRepository;
 
     @Test
     void contextLoads() {
 //        System.out.println(testMapper);
 //        System.out.println(memberService);
-        System.out.println(testMapper);
+        System.out.println(memberRepository);
 
 //        Assertions.assertNotNull(testMapper);
 //        List<Map<Integer, String>> test = memberService.getTest();

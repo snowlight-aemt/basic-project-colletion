@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.snowlight.codingtestspringdaomybatis.model.MemberRepository">
+    <select id="getTest" resultType="java.util.Map">
+        select * from member
+    </select>
+
+    <select id="getByNameAndAge"
+            resultType="me.snowlight.codingtestspringdaomybatis.model.Member"
+            parameterType="me.snowlight.codingtestspringdaomybatis.model.SearchKeyword">
+        select * from member where name = #{name} and age = #{age}
+    </select>
+</mapper>

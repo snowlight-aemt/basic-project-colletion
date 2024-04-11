@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Member {
-    private Integer id;
+public class SearchKeyword {
     private String name;
     private Integer age;
 }
