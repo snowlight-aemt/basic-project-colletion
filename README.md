@@ -1,4 +1,4 @@
-## 실습 프로젝트 
+## 프로젝트 모음
 
 ### Spring
 1. [spring-aws-sqs](https://github.com/snowlight-aemt/basic-project-colletion/tree/master/spring-aws-sqs) - (SQS(Simple Queue Service) 활용 - AWS)
