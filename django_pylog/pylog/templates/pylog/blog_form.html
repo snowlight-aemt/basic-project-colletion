@@ -1,0 +1,13 @@
+{% extends "pylog/base.html" %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+    <form action="/blog/" method="post" novalidate>
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <div class="d-grid gap-2 col-12">
+            <input class="btn btn-primary btn-sm" type="submit" value="저장" />
+        </div>
+    </form>
+
+{% endblock %}

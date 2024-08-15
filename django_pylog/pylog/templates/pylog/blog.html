@@ -1,0 +1,15 @@
+{% extends "pylog/base.html" %}
+
+{% block content %}
+
+    <ol class="list-inline ">
+    {% for post in post_list %}
+        <li>
+            <a href="/blog/{{ post.blog_no }}">{{ post.title }}</a>
+        </li>
+    {% endfor %}
+    </ol>
+
+    <br/>
+    <a href="/blog/new/">Write Blog</a>
+{% endblock %}
