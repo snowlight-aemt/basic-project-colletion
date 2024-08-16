@@ -9,20 +9,25 @@ from pylog.models import Blog
 
 
 def blog(request: HttpRequest) -> HttpResponse:
-    if request.GET:
-        blog_list = Blog.objects.all()
+    if request.method == "GET":
+        title = request.GET.get("title")
 
-        return render(request, "pylog/blog.html", {"post_list": blog_list})
-    elif request.POST:
-        # print(request.POST.get("content"))
+        if title is not None:
+            blog_list = Blog.objects.filter(title=title)
+        else:
+            blog_list = Blog.objects.all()
 
-        Blog.objects.create(
-            title=request.POST["title"],
-            content=request.POST["content"],
-            email=request.POST["email"],
+        context = {"post_list": blog_list}
+
+        return render(request, "pylog/blog.html", context)
+    elif request.method == "POST":
+        blog = Blog.objects.create(
+            title=request.POST.get("title"),
+            content=request.POST.get("content"),
+            email=request.POST.get("email"),
         )
 
-    return render(request, "pylog/blog.html", {})
+        return HttpResponse(content_type="application/json", status=200, content=blog)
 
 
 def blog_detail(request: HttpRequest, blog_no: int) -> HttpResponse:
