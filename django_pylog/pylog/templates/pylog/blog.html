@@ -1,7 +1,6 @@
 {% extends "pylog/base.html" %}
 
 {% block content %}
-
     <ol class="list-inline ">
     {% for post in post_list %}
         <li>
@@ -11,10 +10,12 @@
     </ol>
 
     <br/>
-    <form action="/blog/" method="GET" >
-        <label for="title"></label>
-        <input id="title" type="text" name="title" placeholder="title" />
-        <input type="submit" value="검색" />
-    </form>
-    <a href="/blog/new/">Write Blog</a>
+    <div class="d-flex justify-content">
+        <form action="/blog/" method="GET" >
+            <label for="title" class="form-label">Search</label>
+            <input id="title" type="text" name="title" placeholder="title" class="form-control" />
+            <input type="submit" value="Search" />
+        </form>
+    </div>
+    <a href="/blog/new/" class="btn btn-md btn-success m-2">Write Blog</a>
 {% endblock %}
