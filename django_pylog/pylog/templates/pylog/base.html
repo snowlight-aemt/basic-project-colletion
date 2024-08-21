@@ -12,15 +12,24 @@
     {% bootstrap_javascript %}
 
 </head>
-<body>
-    <div class="d-flex align-content-between flex-column">
-        <h1 class="text-center">PY BLOG</h1>
+<body class="vh-100">
+    <div class="d-flex align-content-between flex-column h-100">
+        <diV class="d-flex justify-content-between m-1">
+            <div class="mx-1">ICON LOG | PY BLOG</div>
+            <div>
+                <a href="/blog/new/" class="btn btn-sm btn-success">글쓰기</a>
+                <span class="mx-1">PROFILE</span>
+            </div>
+        </diV>
 
-        {% block content %}
-        {% endblock %}
+        <diV class="m-2">
+            {% block content %}
+            {% endblock %}
+        </diV>
 
-        <hr />
-        &copy; 2024. 파이썬 템플릿 상속
+        <div class="mt-auto">
+            &copy; 2024. 파이썬 템플릿 상속
+        </div>
     </div>
 </body>
 </html>
