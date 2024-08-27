@@ -17,7 +17,7 @@
             {% for post in post_list %}
                 <li>
                     <a href="/blog/{{ post.blog_no }}"><h3>{{ post.title }}</h3></a>
-                    <p>{{ post.summary }}</p>
+                    <p class="text-truncate">{{ post.content }}</p>
                 </li>
             {% endfor %}
         </ol>

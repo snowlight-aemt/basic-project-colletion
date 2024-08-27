@@ -1,5 +1,3 @@
-from tempfile import template
-
 from django.forms import model_to_dict
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, get_object_or_404
@@ -16,12 +14,7 @@ def blog(request: HttpRequest) -> HttpResponse:
         if title is not None:
             new_blog_list = Blog.objects.filter(title=title)
         else:
-            blog_list = Blog.objects.all()
-            new_blog_list = list()
-            for item in blog_list:
-                blog_dict = model_to_dict(item)
-                blog_dict["summary"] = blog_dict["content"][0:100]
-                new_blog_list.append(blog_dict)
+            new_blog_list = Blog.objects.all()
 
         context = {"post_list": new_blog_list}
 
