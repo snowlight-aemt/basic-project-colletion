@@ -1,4 +1,6 @@
 # LEARN
+- Models choices keyword 활용
+- django admin page 노출 설정 방법
 
 # ISSUE
 `users.User.avatar: (fields.E210) Cannot use ImageField because Pillow is not installed.`
