@@ -1,7 +1,5 @@
 package com.sanhait.springfilesave.file;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.sanhait.springfilesave.file.dto.Reservation;
@@ -16,11 +14,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.List;
 
-public class RoomHistoryRepository {
-    private static final Logger logger = LoggerFactory.getLogger(RoomHistoryRepository.class);
+public class FileRoomHistoryRepository {
+    private static final Logger logger = LoggerFactory.getLogger(FileRoomHistoryRepository.class);
     public static final int MAX_SEQ_NO = 1000;
 
     public static int seqNo = 0;
@@ -43,119 +39,6 @@ public class RoomHistoryRepository {
 
     public static int getMaxSeqNo() {
         return maxSeqNo;
-    }
-
-    public synchronized static List<Room> findRoomAll() {
-        var objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-
-        String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        StringBuffer stringBuffer = new StringBuffer();
-
-        try {
-            List<String> strings = Files.readAllLines(Paths.get("C:\\log\\" + now + "\\room.txt"));
-
-            stringBuffer.append("[");
-            strings.stream().forEach(stringBuffer::append);
-            stringBuffer.deleteCharAt(stringBuffer.length() - 1);
-            stringBuffer.append("]");
-            objectMapper.registerModule(new JavaTimeModule());
-        } catch (IOException e) {
-            return Collections.emptyList();
-        }
-
-        try {
-            List<Room> rooms = objectMapper.readValue(stringBuffer.toString(), new TypeReference<List<Room>>() {});
-            return rooms;
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    public synchronized static List<Room> findRoomByRoomNo(String roomNo) {
-        var objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-
-        String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        StringBuffer stringBuffer = new StringBuffer();
-
-        try {
-            List<String> strings = Files.readAllLines(Paths.get("C:\\log\\" + now + "\\" + roomNo + "\\room.txt"));
-
-            stringBuffer.append("[");
-            strings.stream().forEach(stringBuffer::append);
-            stringBuffer.deleteCharAt(stringBuffer.length() - 1);
-            stringBuffer.append("]");
-        } catch (IOException e) {
-            return Collections.emptyList();
-        }
-
-        try {
-            return objectMapper.readValue(stringBuffer.toString(), new TypeReference<List<Room>>() {});
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public synchronized static List<Reservation> findReservationByRoomNo(String roomNo) {
-        var objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-
-        String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        StringBuffer stringBuffer1 = new StringBuffer();
-        try {
-            List<String> strings = Files.readAllLines(Paths.get("C:\\log\\" + now + "\\" + roomNo + "\\reservation.txt"));
-
-            stringBuffer1.append("[");
-            strings.stream().forEach(stringBuffer1::append);
-            stringBuffer1.deleteCharAt(stringBuffer1.length() - 1);
-            stringBuffer1.append("]");
-
-        } catch (IOException e) {
-            return Collections.emptyList();
-        }
-
-        try {
-            return objectMapper.readValue(stringBuffer1.toString(), new TypeReference<List<Reservation>>() {});
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public synchronized static List<Reservation> findReservationAll() {
-        var objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-
-        String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        StringBuffer stringBuffer1 = new StringBuffer();
-        try {
-            List<String> strings = Files.readAllLines(Paths.get("C:\\log\\" + now + "\\reservation.txt"));
-
-            stringBuffer1.append("[");
-            strings.stream().forEach(stringBuffer1::append);
-            stringBuffer1.deleteCharAt(stringBuffer1.length() - 1);
-            stringBuffer1.append("]");
-
-            objectMapper.registerModule(new JavaTimeModule());
-        } catch (IOException e) {
-            return Collections.emptyList();
-        }
-
-        try {
-            return objectMapper.readValue(stringBuffer1.toString(), new TypeReference<List<Reservation>>() {});
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public synchronized static List<String> getRoomNo() {
-        String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        try {
-            return Files.list(Paths.get("C:\\log\\" + now))
-                    .filter(Files::isDirectory)
-                    .map(Path::toString).toList();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public synchronized static void saveRoom(Room room) {

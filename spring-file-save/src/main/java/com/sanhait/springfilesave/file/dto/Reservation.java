@@ -1,9 +1,14 @@
 
 package com.sanhait.springfilesave.file.dto;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+@Data
+@NoArgsConstructor
 public class Reservation implements Serializable {
     private int seqNo;
     private String roomNo;
