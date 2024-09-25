@@ -1,20 +1,25 @@
 {% extends "pylog/base.html" %}
 
 {% block content %}
-
-    <ol class="list-inline ">
-    {% for post in post_list %}
-        <li>
-            <a href="/blog/{{ post.blog_no }}">{{ post.title }}</a>
-        </li>
-    {% endfor %}
-    </ol>
-
-    <br/>
-    <form action="/blog/" method="GET" >
-        <label for="title"></label>
-        <input id="title" type="text" name="title" placeholder="title" />
-        <input type="submit" value="검색" />
-    </form>
-    <a href="/blog/new/">Write Blog</a>
+    <div class="container">
+        <div class="text-center">
+            <form action="/blog/" method="GET" class="row justify-content-end">
+                <div class="p-0 col-2">
+                    <label for="title" class="visually-hidden col-form-label-sm">Title</label>
+                    <input id="title" type="text" name="title" placeholder="title" class="form-control form-control-sm" />
+                </div>
+                <div class="col-auto">
+                    <input type="submit" value="검색" class="btn btn-sm btn-primary" />
+                </div>
+            </form>
+        </div>
+        <ol class="list-inline ">
+            {% for post in post_list %}
+                <li>
+                    <a href="/blog/{{ post.blog_no }}"><h3>{{ post.title }}</h3></a>
+                    <p class="text-truncate">{{ post.content }}</p>
+                </li>
+            {% endfor %}
+        </ol>
+    </div>
 {% endblock %}

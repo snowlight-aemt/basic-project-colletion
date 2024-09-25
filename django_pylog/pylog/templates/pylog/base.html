@@ -6,21 +6,29 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>장고 입무</title>
-
+    <title>BLOG</title>
     {% bootstrap_css %}
     {% bootstrap_javascript %}
 
 </head>
-<body>
-    <div class="container">
-        <h1>장고 입문</h1>
+<body class="vh-100">
+    <div class="d-flex align-content-between flex-column h-100">
+        <diV class="d-flex justify-content-between p-1 bg-secondary">
+            <div class="mx-1 text-white">ICON LOG | PY BLOG</div>
+            <div>
+                <a href="/blog/new/" class="btn btn-sm btn-success">글쓰기</a>
+                <span class="mx-1 text-white">PROFILE</span>
+            </div>
+        </diV>
 
-        {% block content %}
-        {% endblock %}
+        <diV class="m-2">
+            {% block content %}
+            {% endblock %}
+        </diV>
 
-        <hr />
-        &copy; 2024. 파이썬 템플릿 상속
+        <div class="mt-auto">
+            &copy; 2024. 파이썬 템플릿 상속
+        </div>
     </div>
 </body>
 </html>

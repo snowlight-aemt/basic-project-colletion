@@ -1,5 +1,4 @@
-from tempfile import template
-
+from django.forms import model_to_dict
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import CreateView
@@ -13,11 +12,11 @@ def blog(request: HttpRequest) -> HttpResponse:
         title = request.GET.get("title")
 
         if title is not None:
-            blog_list = Blog.objects.filter(title=title)
+            new_blog_list = Blog.objects.filter(title=title)
         else:
-            blog_list = Blog.objects.all()
+            new_blog_list = Blog.objects.all()
 
-        context = {"post_list": blog_list}
+        context = {"post_list": new_blog_list}
 
         return render(request, "pylog/blog.html", context)
     elif request.method == "POST":
