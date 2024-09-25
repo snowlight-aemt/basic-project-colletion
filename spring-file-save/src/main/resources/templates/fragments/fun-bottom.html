@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="bottom-button">
+    <button class="rounded-5 btn btn-sm btn-outline-dark bottom-btn">BOTTOM</button>
+
+
+    <script>
+        const $bottomBtn = document.querySelector(".bottom-btn");
+        $bottomBtn.onclick = () => {
+            window.scrollTo({
+                top: document.body.scrollHeight, // <- 페이지 총 Height
+                behavior: "smooth"
+            });
+        };
+    </script>
+</th:block>
+
+<th:block th:fragment="top-button">
+    <button class="rounded-5 btn btn-sm btn-outline-dark top-btn">TOP</button>
+
+
+    <script>
+        const $topBtn = document.querySelector(".top-btn");
+        $topBtn.onclick = () => {
+            window.scrollTo({
+                top: document.body.scrollTop, // <- 페이지 총 Height
+                behavior: "smooth"
+            });
+        };
+    </script>
+</th:block>
+
+<th:block th:fragment="refresh-button">
+    <button class="rounded-5 btn btn-sm btn-outline-dark refresh-btn" value="on">Refresh Off</button>
+    <strong class="refresh-time"></strong>
+
+<!--    <div class="form-check form-switch">-->
+<!--        <input class="form-check-input refresh-btn" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>-->
+<!--        <label class="form-check-label" for="flexSwitchCheckChecked">Refresh</label>-->
+<!--    </div>-->
+    <th:block th:replace="fragments/util-script::date"></th:block>
+    <script>
+        console.log("새로 고침")
+        let timer_val = null;
+        const $refreshBtn = document.querySelector(".refresh-btn");
+        const $refreshTime = document.querySelector(".refresh-time");
+
+        $refreshTime.textContent = dateFormat_minute(new Date());
+        time_run($refreshBtn);
+
+        $refreshBtn.onclick = function(value) {
+            time_run(value.target);
+        }
+
+        function time_run(time_el) {
+            if (time_el.value === 'on') {
+                timer_val = setTimeout(() => {
+                    location.reload(true);
+                }, 1000 * 10 * 1);
+
+                time_el.value = 'off';
+                time_el.textContent='Refresh Off'
+            } else {
+                clearTimeout(timer_val);
+
+                time_el.value = 'on';
+                time_el.textContent='Refresh On'
+            }
+        }
+
+        let bottom = setTimeout(() => {
+            window.scrollTo({
+                top: document.body.scrollHeight, // <- 페이지 총 Height
+                behavior: "smooth"
+            });
+        }, 1000 * 3);
+
+
+
+    </script>
+</th:block>
+
+</html>

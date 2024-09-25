@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="date">
+    <script>
+        function dateFormat(createdAt) {
+            let d = new Date(createdAt);
+            let mouth = String(d.getMonth() + 1).padStart(2, '0');
+            let date = String(d.getDate()).padStart(2, '0');
+            let fullDate = `${d.getFullYear()}-${mouth}-${date}`;
+
+            let hours = String(d.getHours()).padStart(2, '0');
+            let minutes = String(d.getMinutes()).padStart(2, '0');
+            let dateTime = `${fullDate} ${hours}:${minutes}`;
+
+            return dateTime;
+        }
+
+        function dateFormat_minute(createdAt) {
+            let d = new Date(createdAt);
+            let hours = String(d.getHours()).padStart(2, '0');
+            let minutes = String(d.getMinutes()).padStart(2, '0');
+            let dateTime = `${hours}:${minutes}`;
+
+            return dateTime;
+        }
+    </script>
+</th:block>
+
+</html>

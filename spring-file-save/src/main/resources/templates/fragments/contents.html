@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="content">
+
+    <div class="w-100 text-center justify-content-center">
+        <div class="w-50 m-auto px-5 bg-white">
+            <div class="sticky-top bg-white d-flex flex-column">
+                <div class="text-start d-flex flex-row justify-content-between">
+                    <div>
+                        <th:block th:replace="fragments/fun-bottom::top-button"></th:block>
+                        <th:block th:replace="fragments/fun-bottom::bottom-button"></th:block>
+                    </div>
+                    <div>
+                        <th:block th:replace="fragments/fun-bottom::refresh-button"></th:block>
+                    </div>
+                </div>
+                <div class="d-flex flex-row justify-content-between border-bottom m-1 border-5 border-bottom border-secondary">
+                    <div class="text-uppercase fs-2">PMS</div>
+                    <div class="text-uppercase fs-2">RMS (외부 벤더)</div>
+                </div>
+            </div>
+
+            <ul class="list-unstyled">
+                <th:block th:each="i : ${#numbers.sequence(0, count)}">
+                    <li th:id="|seq-no-${i}|" th:text="${{i}}"  class="visually-hidden"></li>
+                </th:block>
+            </ul>
+        </div>
+    </div>
+
+
+
+    <script type="application/javascript" th:inline="javascript">
+        (function () {
+            let reservations = [[${reservations}]];
+            let rooms = [[${rooms}]];
+
+            for (var j of rooms) {
+                let element = document.querySelector("#seq-no-" + j.seqNo);
+                element.classList.remove("visually-hidden");
+                element.innerHTML =
+                    `<div class="d-flex justify-content-end px-2 pb-1">
+                        <div class="border border-1 border-warning rounded-4 text-end w-75">
+                            <div class="bg-secondary-subtle rounded-4 text-danger p-1">${dateFormat(j.createdAt)}<span class="badge bg-success mx-1">${j.status}</span></div>
+                            <div class="p-2">
+                                <strong>${j.roomCleanStatus}</strong>
+                                <strong>&nbsp/&nbsp</strong>
+                                <strong class="pr-2">${j.roomStatus}</strong>
+                                <span class="badge bg-dark text-white mx-1">${j.roomNo}</span>
+                            </div>
+                        </div>
+                    </div>`;
+            }
+
+            for (var i of reservations) {
+                let element = document.querySelector("#seq-no-" + i.seqNo);
+                element.classList.remove("visually-hidden");
+                element.innerHTML =
+                    `<div class="d-flex justify-content-start px-2 pb-1">
+                        <div class="border border-1 border-warning rounded-4 text-start w-75">
+                            <div class="bg-secondary-subtle rounded-4 text-danger p-1"><span class="badge bg-success mx-1">${i.status}</span>${dateFormat(i.createdAt)}</div>
+                            <div class="p-2">
+                                <span class="badge bg-dark text-white mx-1">${i.roomNo}</span>
+                                <strong>${i.reservationStatus}</strong>
+                            </div>
+                        </div>
+                    </div>`;
+            }
+        })()
+
+        function dateFormat(createdAt) {
+            let d = new Date(createdAt);
+            let mouth = String(d.getMonth() + 1).padStart(2, '0');
+            let date = String(d.getDate()).padStart(2, '0');
+            let fullDate = `${d.getFullYear()}-${mouth}-${date}`;
+
+            let hours = String(d.getHours()).padStart(2, '0');
+            let minutes = String(d.getMinutes()).padStart(2, '0');
+            let dateTime = `${fullDate} ${hours}:${minutes}`;
+
+            return dateTime;
+        }
+
+
+        function dateFormat_minute(createdAt) {
+            let d = new Date(createdAt);
+            let hours = String(d.getHours()).padStart(2, '0');
+            let minutes = String(d.getMinutes()).padStart(2, '0');
+            let dateTime = `${hours}:${minutes}`;
+
+            return dateTime;
+        }
+
+    </script>
+</th:block>>
+
+
+
+</html>

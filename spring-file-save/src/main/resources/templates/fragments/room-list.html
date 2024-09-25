@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="room-list">
+    <div class="text-center">
+        <a class="btn btn-sm btn-outline-secondary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            객실 번화 조회
+        </a>
+    </div>
+    <div class="collapse" id="collapseExample">
+        <ul class="list-unstyled d-flex flex-row px-1">
+            <th:block th:each="i : ${roomName}">
+                <li class="mx-1" >
+                    <a th:href="@{room(roomNo=${i})}" th:text="${i}"></a>
+                </li>
+            </th:block>
+        </ul>
+    </div>
+</th:block>
+
+</html>
