@@ -1,5 +1,5 @@
 
-package com.sanhait.springfilesave.file;
+package com.sanhait.springfilesave.file.dto;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

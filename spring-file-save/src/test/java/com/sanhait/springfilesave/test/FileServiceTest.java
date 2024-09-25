@@ -1,6 +1,8 @@
 package com.sanhait.springfilesave.test;
 
 import com.sanhait.springfilesave.file.*;
+import com.sanhait.springfilesave.file.dto.Reservation;
+import com.sanhait.springfilesave.file.dto.Room;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;

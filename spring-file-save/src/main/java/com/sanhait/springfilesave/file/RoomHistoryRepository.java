@@ -2,6 +2,8 @@ package com.sanhait.springfilesave.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.sanhait.springfilesave.file.dto.Reservation;
+import com.sanhait.springfilesave.file.dto.Room;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

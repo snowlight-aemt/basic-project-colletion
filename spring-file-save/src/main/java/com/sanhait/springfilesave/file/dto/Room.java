@@ -1,5 +1,5 @@
 
-package com.sanhait.springfilesave.file;
+package com.sanhait.springfilesave.file.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
