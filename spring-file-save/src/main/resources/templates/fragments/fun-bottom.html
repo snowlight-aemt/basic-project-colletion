@@ -35,11 +35,7 @@
     <button class="rounded-5 btn btn-sm btn-outline-dark refresh-btn" value="on">Refresh Off</button>
     <strong class="refresh-time"></strong>
 
-<!--    <div class="form-check form-switch">-->
-<!--        <input class="form-check-input refresh-btn" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>-->
-<!--        <label class="form-check-label" for="flexSwitchCheckChecked">Refresh</label>-->
-<!--    </div>-->
-    <th:block th:replace="fragments/util-script::date"></th:block>
+    <th:block th:replace="~{fragments/util-script::date}"></th:block>
     <script>
         console.log("새로 고침")
         let timer_val = null;
