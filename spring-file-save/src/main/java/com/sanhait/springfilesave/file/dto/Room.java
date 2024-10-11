@@ -3,6 +3,7 @@ package com.sanhait.springfilesave.file.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -14,14 +15,15 @@ public class Room implements Serializable {
     private String roomNo;
     private RoomCleanStatus roomCleanStatus;
     private RoomStatus roomStatus;
-    private String status;
+    private Status status;
     private LocalDateTime createdAt;
+    private String message = "";
 
     public Room clone() {
         return new Room(this.seqNo, this.roomNo, this.roomCleanStatus, this.roomStatus, this.status, this.createdAt);
     }
 
-    public Room(String roomNo, RoomCleanStatus roomCleanStatus, RoomStatus roomStatus, String status, LocalDateTime createdAt) {
+    public Room(String roomNo, RoomCleanStatus roomCleanStatus, RoomStatus roomStatus, Status status, LocalDateTime createdAt) {
         this.roomNo = roomNo;
         this.roomCleanStatus = roomCleanStatus;
         this.roomStatus = roomStatus;
@@ -29,7 +31,16 @@ public class Room implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Room(int seqNo, String roomNo, RoomCleanStatus roomCleanStatus, RoomStatus roomStatus, String status, LocalDateTime createdAt) {
+    public Room(String roomNo, RoomCleanStatus roomCleanStatus, RoomStatus roomStatus, Status status, LocalDateTime createdAt, String message) {
+        this.roomNo = roomNo;
+        this.roomCleanStatus = roomCleanStatus;
+        this.roomStatus = roomStatus;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.message = message;
+    }
+
+    public Room(int seqNo, String roomNo, RoomCleanStatus roomCleanStatus, RoomStatus roomStatus, Status status, LocalDateTime createdAt) {
         this.seqNo = seqNo;
         this.roomNo = roomNo;
         this.roomCleanStatus = roomCleanStatus;
@@ -70,11 +81,11 @@ public class Room implements Serializable {
         this.roomStatus = roomStatus;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -88,7 +99,8 @@ public class Room implements Serializable {
 
     public enum RoomStatus {
         E("재실"),
-        T("외출");
+        T("외출"),
+        VACANCY("공실");
 
         private String name;
 
@@ -98,6 +110,17 @@ public class Room implements Serializable {
 
         RoomStatus(String name) {
             this.name = name;
+        }
+
+        public static RoomStatus getEnum(String value) {
+            for (RoomStatus roomStatus : RoomStatus.values()) {
+                if (!StringUtils.hasText(value)) {
+                    return VACANCY;
+                } else {
+                    return roomStatus;
+                }
+            }
+            throw new IllegalArgumentException("Invalid RandomEnum value: " + value);
         }
     }
 
@@ -118,5 +141,10 @@ public class Room implements Serializable {
             this.name = name;
         }
     }
+
+    public enum Status {
+        SUCCESS, FAIL
+    }
+
 }
 

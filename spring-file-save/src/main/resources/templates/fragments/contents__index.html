@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="content">
+
+    <script>
+        const reservationSSE = new EventSource("[[@{/monitoring/sse/subscribe/reservation}]]");
+        const roomSSE = new EventSource("[[@{/monitoring/sse/subscribe/room}]]");
+
+        reservationSSE.addEventListener('broadcast event', (e) => {
+            const $reservationList = document.querySelector("#reservation-list");
+            const { data: response } = e;
+
+            let selectedReservation = JSON.parse(response);
+
+            let html =
+                `<li><div class="d-flex justify-content-start px-2 pb-1">
+                        <div class="border border-1 border-warning rounded-4 text-start w-75">
+                            <div class="bg-secondary-subtle rounded-4 text-danger p-1"><span
+                                class="badge bg-success mx-1">${selectedReservation.status}</span>${dateFormat(selectedReservation.createdAt)}</div>
+                            <div class="p-2">
+                                <span class="badge bg-dark text-white mx-1">${selectedReservation.roomNo}</span>
+                                <strong>${selectedReservation.reservationStatus}</strong>
+                                <br/>
+                                <div class="debug-message visually-hidden">${selectedReservation.message}</div>
+                            </div>
+                        </div>
+                    </div></<li>`;
+            $reservationList.innerHTML += html;
+
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: "smooth"
+            });
+        });
+
+        roomSSE.addEventListener('broadcast event', (e) => {
+            const $reservationList = document.querySelector("#reservation-list");
+            const { data: response } = e;
+            let selectedRoom = JSON.parse(response);
+            let html =
+                `<li><div class="d-flex justify-content-end px-2 pb-1">
+                        <div class="border border-1 border-warning rounded-4 text-end w-75">
+                            <div class="bg-secondary-subtle rounded-4 text-danger p-1">${dateFormat(selectedRoom.createdAt)}<span class="badge bg-success mx-1">${selectedRoom.status}</span></div>
+                            <div class="p-2">
+                                &nbsp/&nbsp
+                                <strong>${selectedRoom.roomCleanStatus}</strong>
+                                <strong>&nbsp/&nbsp</strong>
+                                <strong class="pr-2">${selectedRoom.roomStatus}</strong>
+                                <span class="badge bg-dark text-white mx-1">${selectedRoom.roomNo}</span>
+                                <br/>
+                                <div class="debug-message visually-hidden">${selectedRoom.message}</div>
+                            </div>
+                        </div>
+                    </div></<li>`;
+            $reservationList.innerHTML += html;
+
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: "smooth"
+            });
+        });
+    </script>
+
+</th:block>>
+
+</html>

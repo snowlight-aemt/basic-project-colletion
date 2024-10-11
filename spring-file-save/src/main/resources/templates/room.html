@@ -11,21 +11,20 @@
 </head>
 
 <body class="bg-secondary">
-    <div class="text-center justify-content-center">
-        <div class="w-50 px-5 py-2 bg-white m-auto">
-            <h1 class="text-center border-bottom">객실 전송 이력 (객실 번호)</h1>
-            <div class="text-center border-bottom mx-2 pb-1 mb-1"><a th:href="@{file}">객실 전송 이력</a></div>
+<div class="text-center justify-content-center">
+    <div class="col-md-8 col-sm-12 m-auto px-2 py-2 bg-white">
+        <h1 class="text-center border-bottom">[DEBUG] 객실 전송 이력 (객실 번호)</h1>
+        <div class="text-center border-bottom mx-2 pb-1"><a th:href="@{home}">객실 전송 이력</a></div>
 
-            <th:block th:unless="${#lists.isEmpty(rooms)}">
-                <div th:replace="fragments/room-list::room-list"></div>
-            </th:block>
+        <th:block th:unless="${#lists.isEmpty(roomName)}">
+            <div th:replace="~{fragments/room-list::room-list}"></div>
+        </th:block>
 
-        </div>
     </div>
+</div>
 
-    <div th:replace="~{fragments/contents::content}"></div>
+<div th:replace="~{fragments/contents::content}"></div>
 
-
-    <script th:src="@{/static/js/bootstrap.js}"></script>
+<script th:src="@{/static/js/bootstrap.js}"></script>
 </body>
 </html>

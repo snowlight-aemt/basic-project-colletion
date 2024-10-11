@@ -3,6 +3,16 @@
 
 <th:block th:fragment="date">
     <script>
+
+        function dateOnlyFormat(createdAt) {
+            let d = new Date(createdAt);
+            let mouth = String(d.getMonth() + 1).padStart(2, '0');
+            let date = String(d.getDate()).padStart(2, '0');
+            let fullDate = `${d.getFullYear()}-${mouth}-${date}`;
+
+            return fullDate;
+        }
+
         function dateFormat(createdAt) {
             let d = new Date(createdAt);
             let mouth = String(d.getMonth() + 1).padStart(2, '0');

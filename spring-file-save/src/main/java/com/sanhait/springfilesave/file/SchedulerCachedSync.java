@@ -1,13 +1,11 @@
-package com.sanhait.springfilesave.test;
+package com.sanhait.springfilesave.file;
 
-import com.sanhait.springfilesave.file.*;
 import com.sanhait.springfilesave.file.dto.Reservation;
 import com.sanhait.springfilesave.file.dto.Room;
-import org.assertj.core.api.Assertions;
-import org.assertj.core.util.Lists;
-import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,18 +16,42 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-//@SpringBootTest
-class FileServiceTest {
-    private static final Logger log = LoggerFactory.getLogger(FileServiceTest.class);
+@Component
+@RequiredArgsConstructor
+@Slf4j
+public class SchedulerCachedSync {
 
-    @Test
-    void save() {
-//        FileQueue fileQueue = new FileQueue();
+    public static final int TEST_BASH_CNT = 10;
+    
+    // TODO 다음 날로 거기 전에 캐시 데이터 전부 이관
+    @Scheduled(cron = "0 58 23 * * *")
+    public void sync() {
+        System.out.println("마감");
+        CacheRoomHistoryRepository.backupCacheRoom();
+        CacheRoomHistoryRepository.backupCacheReservation();
+    }
 
-//        fileQueue.init();
+    @Scheduled(cron = "0 */1 * * * *")
+    public void syncCash() {
+        System.out.println("캐시 저장");
+        CacheRoomHistoryRepository.cacheRoom();
+        CacheRoomHistoryRepository.cacheReservation();
+    }
 
-//        RoomHistoryRepository.deleteAll();
+    @Scheduled(cron = "0 0 0-22 * * *")
+    public void syncFile() {
+        System.out.println("파일 저장");
+        // TODO 처음 실행됨.. ? 로드한 데이터를 삭제할 수 있다.
+        CacheRoomHistoryRepository.backupCacheRoom();
+        CacheRoomHistoryRepository.backupCacheReservation();
+    }
 
+    public static int counttt = 0;
+
+//    @Scheduled(fixedRate = 1000 * 60 * 10)
+    public void asdfasdf() {
+
+//        log.info("테스트 데이터 입력");
         List<Room> rooms = Arrays.asList(
                 new Room("0304", Room.RoomCleanStatus.C, Room.RoomStatus.E, Room.Status.SUCCESS, LocalDateTime.now()),
                 new Room("0305", Room.RoomCleanStatus.G, Room.RoomStatus.T, Room.Status.SUCCESS, LocalDateTime.now()),
@@ -43,9 +65,10 @@ class FileServiceTest {
                 new Reservation("0305", Reservation.ReservationStatus.CHECKOUT, Reservation.Status.SUCCESS, LocalDateTime.now()),
                 new Reservation("0306", Reservation.ReservationStatus.CHECKIN, Reservation.Status.SUCCESS, LocalDateTime.now())
         );
+
         ExecutorService executorService = Executors.newFixedThreadPool(200);
 
-        int count = 200 * 1;
+        int count = (TEST_BASH_CNT * 2);
         CountDownLatch countDownLatch = new CountDownLatch(count);
 
         Random random = new Random(System.currentTimeMillis());
@@ -54,68 +77,37 @@ class FileServiceTest {
         while (true) {
 
             executorService.submit(() -> {
-                log.info(Thread.currentThread().getName());
-                for (int j = 0; j < 100; j++) {
+                for (int j = 0; j < TEST_BASH_CNT; j++) {
                     int i = random.nextInt(4);
                     CacheRoomHistoryRepository.saveRoomCached(rooms.get(i).clone());
-//                    RoomHistoryRepository.saveRoom(rooms.get(i).clone());
 //                    fileQueue.enQueueUpdateRoom(rooms.get(i).clone());
                     countDownLatch.countDown();
                 }
             });
-            cnt += 100;
+            cnt += TEST_BASH_CNT;
 
             executorService.submit(() -> {
-                log.info(Thread.currentThread().getName());
-                for (int j = 0; j < 100; j++) {
+                for (int j = 0; j < TEST_BASH_CNT; j++) {
                     int i = random.nextInt(4);
                     CacheRoomHistoryRepository.saveReservationCached(reservations.get(i).clone());
-//                    RoomHistoryRepository.saveReservation(reservations.get(i).clone());
 //                    fileQueue.enQueueCheckInAndOut(reservations.get(i).clone());
                     countDownLatch.countDown();
                 }
             });
-            cnt += 100;
+            cnt += TEST_BASH_CNT;
 
             if (cnt >= count) {
                 break;
             }
         }
 
+        counttt += countDownLatch.getCount();
+
+
         try {
             countDownLatch.await();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-
-        log.info("끝");
-        Assertions.assertThat(CacheRoomHistoryRepository.seqNo == count);
-
-    }
-
-    @Test
-    void direct() {
-//        try {
-//            Files.list(Paths.get("C:\\log\\20240920")).forEach(s -> {
-//                if (Files.isDirectory(s)) {
-//                    System.out.println(s.getFileName());
-//                }
-//            });
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-    }
-
-    @Test
-    void save1() {
-//        FileQueue fileQueue = new FileQueue();
-//        for (int i=0; i<10; i++) {
-////            log.info("sdf");
-////            Room room = new Room("0304", RoomCleanStatus.C, RoomStatus.E, "SUCCESS", LocalDateTime.now());
-////            fileQueue.enQueueInHouse(new InHouseWithRoom(UUID.randomUUID().toString(), room));
-//        }
     }
 }
-
-
-

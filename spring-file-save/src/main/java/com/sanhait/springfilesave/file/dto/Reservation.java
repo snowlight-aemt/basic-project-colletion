@@ -13,8 +13,9 @@ public class Reservation implements Serializable {
     private int seqNo;
     private String roomNo;
     private ReservationStatus reservationStatus;
-    private String status;
+    private Status status;
     private LocalDateTime createdAt;
+    private String message = "";
 
     public Reservation clone() {
         return new Reservation(this.roomNo, this.reservationStatus, this.status, this.createdAt);
@@ -44,11 +45,11 @@ public class Reservation implements Serializable {
         this.reservationStatus = reservationStatus;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -60,7 +61,15 @@ public class Reservation implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Reservation(String roomNo, ReservationStatus reservationStatus, String status, LocalDateTime createdAt) {
+    public Reservation(String roomNo, ReservationStatus reservationStatus, Status status, LocalDateTime createdAt, String message) {
+        this.roomNo = roomNo;
+        this.reservationStatus = reservationStatus;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.message = message;
+    }
+
+    public Reservation(String roomNo, ReservationStatus reservationStatus, Status status, LocalDateTime createdAt) {
         this.roomNo = roomNo;
         this.reservationStatus = reservationStatus;
         this.status = status;
@@ -80,6 +89,10 @@ public class Reservation implements Serializable {
         ReservationStatus(String name) {
             this.name = name;
         }
+    }
+
+    public enum Status {
+        SUCCESS, FAIL
     }
 }
 
