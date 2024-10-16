@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <th:block th:fragment="bottom-button">
-    <button class="rounded-5 btn btn-sm btn-outline-dark bottom-btn">BOTTOM</button>
+    <button class="rounded-5 btn btn-sm btn-outline-dark bottom-btn">Bottom</button>
 
 
     <script>
@@ -17,7 +17,7 @@
 </th:block>
 
 <th:block th:fragment="top-button">
-    <button class="rounded-5 btn btn-sm btn-outline-dark top-btn">TOP</button>
+    <button class="rounded-5 btn btn-sm btn-outline-dark top-btn">Top</button>
 
 
     <script>
@@ -72,10 +72,7 @@
         }
 
         let bottom = setTimeout(() => {
-            window.scrollTo({
-                top: document.body.scrollHeight, // <- 페이지 총 Height
-                behavior: "smooth"
-            });
+            autoScrollBySort()
         }, 1000 * 60 * 3);
     </script>
 </th:block>
@@ -112,7 +109,7 @@
 </th:block>
 
 <th:block th:fragment="restart-button">
-    <button type="button" class="rounded-5 btn btn-sm btn-danger restart-btn text-dark" value="off">
+    <button type="button" class="rounded-5 btn btn-sm btn-outline-dark btn-danger restart-btn text-dark" value="off">
         <strong>Restart</strong>
     </button>
 
@@ -124,10 +121,70 @@
         }
 
         async function restart() {
-            await fetch("http://localhost:8080/monitoring/run/service");
+            await fetch("[[@{/monitoring/run/service}]]");
         }
     </script>
 </th:block>
+
+<th:block th:fragment="sort-button">
+    <button type="button" class="rounded-5 btn btn-sm btn-outline-dark text-dark sort-btn" value="down">
+        <strong>Sort (Down)</strong>
+    </button>
+
+    <script>
+    (function() {
+        const $sortBtn = document.querySelector(".sort-btn");
+        init($sortBtn);
+
+        $sortBtn.onclick = (event) => {
+            const { target:el } = event;
+            const sort = getSortLocalStorage();
+
+            if (sort === DOWN_STREAM) {
+                up(el);
+
+                const v = document.querySelector("#contents__reservation-list")
+                v.classList.remove("flex-column");
+                v.classList.add("flex-column-reverse");
+            } else if (sort === UP_STREAM) {
+                down(el);
+
+                const v = document.querySelector("#contents__reservation-list")
+                v.classList.remove("flex-column-reverse");
+                v.classList.add("flex-column");
+            }
+
+            autoScrollBySort();
+        }
+
+        function init(el) {
+            const sort = getSortLocalStorage();
+
+            if (sort === DOWN_STREAM) {
+                down(el);
+            } else if (sort === UP_STREAM) {
+                up(el);
+            }
+        }
+
+        function down(el) {
+            localStorage.removeItem(SORT_KEY);
+            localStorage.setItem(SORT_KEY, DOWN_STREAM);
+            el.value = 'down';
+            el.textContent='Sort (Down)'
+        }
+
+        function up(el) {
+            localStorage.removeItem(SORT_KEY);
+            localStorage.setItem(SORT_KEY, UP_STREAM);
+            el.value = 'up';
+            el.textContent='Sort (__Up_)'
+        }
+    })();
+
+    </script>
+</th:block>
+
 
 
 
@@ -147,7 +204,7 @@
     <script>
         // async function sss(e) {
         //     // e.preventDefault();
-        //     const $reservationList = document.querySelector("#reservation-list");
+        //     const $reservationList = document.querySelector("#contents__reservation-list");
         //
         //     const reservationRes = await fetch("http://localhost:8080/monitoring/list");
         //     const reservation = await reservationRes.json();

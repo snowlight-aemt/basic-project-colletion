@@ -1,6 +1,41 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
+
+<th:block th:fragment="common">
+    <script>
+        const SORT_KEY = "sanha_room_management_sort";
+        const DOWN_STREAM = 'downstream';
+        const UP_STREAM = 'upstream';
+
+        const getSortLocalStorage = () => {
+            const storage = localStorage.getItem(SORT_KEY);
+            if (!storage) {
+                localStorage.removeItem(SORT_KEY);
+                localStorage.setItem(SORT_KEY, DOWN_STREAM);
+
+                return localStorage.getItem(SORT_KEY);
+            } else {
+                return storage;
+            }
+        }
+
+        const autoScrollBySort = () => {
+            if (getSortLocalStorage() === UP_STREAM) {
+                window.scrollTo({
+                    top: document.body.scrollTop,
+                    behavior: "smooth"
+                });
+            } else {
+                window.scrollTo({
+                    top: document.body.scrollHeight,
+                    behavior: "smooth"
+                });
+            }
+        }
+    </script>
+</th:block>
+
 <th:block th:fragment="date">
     <script>
 

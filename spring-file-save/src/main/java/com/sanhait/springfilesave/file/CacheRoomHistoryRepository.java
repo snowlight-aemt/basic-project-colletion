@@ -85,7 +85,7 @@ public class CacheRoomHistoryRepository {
         List<Room> roomByRoomNo = RoomHistoryRepository.findRoomByRoomNo(date, roomNo);
         // TODO 순서 확인.
         roomByRoomNo.addAll(findRoomCacheOnly(date).stream()
-                                .filter(r -> r.getRoomNo().equals(roomNo)).collect(Collectors.toList()));
+                .filter(r -> r.getRoomNo().equals(roomNo)).collect(Collectors.toList()));
         return roomByRoomNo;
     }
 
@@ -100,7 +100,7 @@ public class CacheRoomHistoryRepository {
         List<Reservation> reservationByRoomNo = RoomHistoryRepository.findReservationByRoomNo(date, roomNo);
         // TODO 순서 확인.
         reservationByRoomNo.addAll(findReservationCacheOnly(LocalDate.now()).stream()
-                                .filter(r -> r.getRoomNo().equals(roomNo)).collect(Collectors.toList()));
+                .filter(r -> r.getRoomNo().equals(roomNo)).collect(Collectors.toList()));
         return reservationByRoomNo;
     }
 
@@ -254,8 +254,8 @@ public class CacheRoomHistoryRepository {
         Path path = Util.getRootPath(date, CONFIG_FILE_NAME);
 
         try (
-            FileInputStream fis = new FileInputStream(path.toFile());
-            ObjectInputStream oos = new ObjectInputStream(fis);
+                FileInputStream fis = new FileInputStream(path.toFile());
+                ObjectInputStream oos = new ObjectInputStream(fis);
         ) {
             Object o = oos.readObject();
 
@@ -280,7 +280,7 @@ public class CacheRoomHistoryRepository {
     }
 
     public synchronized static void cacheRoom() {
-                                ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
 
         try {
@@ -295,8 +295,6 @@ public class CacheRoomHistoryRepository {
         try (BufferedWriter bufferedWriter =
                      Files.newBufferedWriter(path, StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
             for (Room room : getCacheRoom()) {
-                room.setSeqNo(getNewSeqNo());
-
                 bufferedWriter.write(objectMapper.writeValueAsString(room));
                 bufferedWriter.write(",");
                 bufferedWriter.newLine();
@@ -331,8 +329,6 @@ public class CacheRoomHistoryRepository {
                      Files.newBufferedWriter(path, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
         ) {
             for (Reservation reservation : getCacheReservation()) {
-                reservation.setSeqNo(getNewSeqNo());
-
                 bufferedWriter.write(objectMapper.writeValueAsString(reservation));
                 bufferedWriter.write(",");
                 bufferedWriter.newLine();
@@ -350,5 +346,4 @@ public class CacheRoomHistoryRepository {
         }
 
     }
-
 }
