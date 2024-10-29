@@ -2,6 +2,7 @@
 package com.sanhait.springfilesave.file.dto;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
 
@@ -18,10 +19,6 @@ public class Room implements Serializable {
     private Status status;
     private LocalDateTime createdAt;
     private String message = "";
-
-    public Room clone() {
-        return new Room(this.seqNo, this.roomNo, this.roomCleanStatus, this.roomStatus, this.status, this.createdAt);
-    }
 
     public Room(String roomNo, RoomCleanStatus roomCleanStatus, RoomStatus roomStatus, Status status, LocalDateTime createdAt) {
         this.roomNo = roomNo;
@@ -49,64 +46,13 @@ public class Room implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public int getSeqNo() {
-        return seqNo;
-    }
-
-    public void setSeqNo(int seqNo) {
-        this.seqNo = seqNo;
-    }
-
-    public String getRoomNo() {
-        return roomNo;
-    }
-
-    public void setRoomNo(String roomNo) {
-        this.roomNo = roomNo;
-    }
-
-    public RoomCleanStatus getRoomCleanStatus() {
-        return roomCleanStatus;
-    }
-
-    public void setRoomCleanStatus(RoomCleanStatus roomCleanStatus) {
-        this.roomCleanStatus = roomCleanStatus;
-    }
-
-    public RoomStatus getRoomStatus() {
-        return roomStatus;
-    }
-
-    public void setRoomStatus(RoomStatus roomStatus) {
-        this.roomStatus = roomStatus;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
+    @Getter
     public enum RoomStatus {
         E("재실"),
         T("외출"),
         VACANCY("공실");
 
         private String name;
-
-        public String getName() {
-            return this.name;
-        }
 
         RoomStatus(String name) {
             this.name = name;
@@ -124,6 +70,7 @@ public class Room implements Serializable {
         }
     }
 
+    @Getter
     public enum RoomCleanStatus {
         G("청소 지시"),
         C("청소 중"),
@@ -133,10 +80,6 @@ public class Room implements Serializable {
 
         private String name;
 
-        public String getName() {
-            return this.name;
-        }
-
         RoomCleanStatus(String name) {
             this.name = name;
         }
@@ -145,6 +88,5 @@ public class Room implements Serializable {
     public enum Status {
         SUCCESS, FAIL
     }
-
 }
 

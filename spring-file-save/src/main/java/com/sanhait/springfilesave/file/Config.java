@@ -1,7 +1,12 @@
 package com.sanhait.springfilesave.file;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 
+@Data
+@NoArgsConstructor
 public class Config implements Serializable {
     public int maxSeqNo;
 

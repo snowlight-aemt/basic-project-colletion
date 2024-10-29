@@ -21,6 +21,7 @@ public class SpringFileSaveApplication {
 
     @PreDestroy
     public void onShutdown() {
+        System.out.println("서비스 종료 로직");
         log.info("서비스 종료 로직");
 
         CacheRoomHistoryRepository.backupCacheRoom();

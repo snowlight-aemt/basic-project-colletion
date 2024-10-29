@@ -30,11 +30,14 @@ public class RoomDto implements Serializable {
     }
 
     public static RoomDto dto(Room room) {
+        String roomCleanStatus = room.getRoomCleanStatus() != null ? room.getRoomCleanStatus().getName() : "";
+        String roomStatus = room.getRoomStatus() != null ? room.getRoomStatus().getName() : "";
+
         return new RoomDto(
                 room.getSeqNo(),
                 room.getRoomNo(),
-                room.getRoomCleanStatus().getName(),
-                room.getRoomStatus().getName(),
+                roomCleanStatus,
+                roomStatus,
                 room.getStatus().name(),
                 room.getCreatedAt(),
                 room.getMessage()

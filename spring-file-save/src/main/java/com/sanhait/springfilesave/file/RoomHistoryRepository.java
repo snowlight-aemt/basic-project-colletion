@@ -13,21 +13,18 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RoomHistoryRepository {
     private static final Logger logger = LoggerFactory.getLogger(RoomHistoryRepository.class);
 
-//    public static final String ROOT_PATH = "C:\\log\\";
-//    public static final String RESERVATION_FILE = "reservation.txt";
     public static final String RESERVATION_FILE_NAME = "reservation.txt";
-//    public static final String ROOM_FILE = "room.txt";
     public static final String ROOM_FILE_NAME = "room.txt";
 
     public synchronized static List<Room> findRoomAll(LocalDate date) {
@@ -141,7 +138,7 @@ public class RoomHistoryRepository {
             return Files.list(Util.getRootPath(now))
                     .filter(Files::isDirectory)
                     .map(Path::getFileName)
-                    .map(Path::toString).toList();
+                    .map(Path::toString).collect(Collectors.toList());
         } catch (IOException e) {
             return new ArrayList<>();
         }
@@ -212,16 +209,4 @@ public class RoomHistoryRepository {
             throw new RuntimeException(e);
         }
     }
-
-//    public static void deleteAll() {
-//        try {
-//            for (var path : Files.list(Util.getRootPath()).toList()) {
-//                logger.info(path.toString());
-//                Files.delete(path);
-//            }
-//            Files.deleteIfExists(Util.getRootPath());
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
 }

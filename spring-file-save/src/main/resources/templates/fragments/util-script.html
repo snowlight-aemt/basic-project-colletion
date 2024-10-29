@@ -26,7 +26,7 @@
                     top: document.body.scrollTop,
                     behavior: "smooth"
                 });
-            } else {
+            } else if (getSortLocalStorage() === DOWN_STREAM) {
                 window.scrollTo({
                     top: document.body.scrollHeight,
                     behavior: "smooth"

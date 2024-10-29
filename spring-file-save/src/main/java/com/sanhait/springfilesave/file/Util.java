@@ -1,15 +1,12 @@
 package com.sanhait.springfilesave.file;
 
-import jakarta.validation.constraints.NotNull;
-import org.springframework.lang.NonNull;
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class Util {
-    public static final String ROOT_PATH = "C:\\log\\";
+    public static final String ROOT_PATH = "C:\\WINGS\\rms\\room\\monitoring\\";
 //    public static LocalDate date = LocalDate.now();
 
     public static Path getRootPath() {
@@ -38,5 +35,9 @@ public class Util {
         } else {
             return Paths.get(ROOT_PATH + dateSelected + "\\", path);
         }
+    }
+
+    public static Path getRoot() {
+        return Paths.get(ROOT_PATH);
     }
 }

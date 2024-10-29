@@ -1,15 +1,13 @@
 package com.sanhait.springfilesave.test;
 
-import com.sanhait.springfilesave.file.*;
+import com.sanhait.springfilesave.file.CacheRoomHistoryRepository;
 import com.sanhait.springfilesave.file.dto.Reservation;
 import com.sanhait.springfilesave.file.dto.Room;
 import org.assertj.core.api.Assertions;
-import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -56,8 +54,7 @@ class FileServiceTest {
             executorService.submit(() -> {
                 log.info(Thread.currentThread().getName());
                 for (int j = 0; j < 100; j++) {
-                    int i = random.nextInt(4);
-                    CacheRoomHistoryRepository.saveRoomCached(rooms.get(i).clone());
+                    CacheRoomHistoryRepository.saveRoomCached(rooms.get(j));
 //                    RoomHistoryRepository.saveRoom(rooms.get(i).clone());
 //                    fileQueue.enQueueUpdateRoom(rooms.get(i).clone());
                     countDownLatch.countDown();
@@ -69,7 +66,7 @@ class FileServiceTest {
                 log.info(Thread.currentThread().getName());
                 for (int j = 0; j < 100; j++) {
                     int i = random.nextInt(4);
-                    CacheRoomHistoryRepository.saveReservationCached(reservations.get(i).clone());
+                    CacheRoomHistoryRepository.saveReservationCached(reservations.get(j));
 //                    RoomHistoryRepository.saveReservation(reservations.get(i).clone());
 //                    fileQueue.enQueueCheckInAndOut(reservations.get(i).clone());
                     countDownLatch.countDown();

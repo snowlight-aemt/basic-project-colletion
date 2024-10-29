@@ -78,13 +78,17 @@ public class CacheRoomHistoryRepository {
         List<Room> roomAll = RoomHistoryRepository.findRoomAll(date);
         // TODO 순서 확인.
         roomAll.addAll(findRoomCacheOnly(date));
+        roomAll.addAll(CacheRoomHistoryRepository.getCacheRoom());
         return roomAll;
     }
 
     public static List<Room> findRoomByRoomNo(LocalDate date, String roomNo) {
         List<Room> roomByRoomNo = RoomHistoryRepository.findRoomByRoomNo(date, roomNo);
-        // TODO 순서 확인.
-        roomByRoomNo.addAll(findRoomCacheOnly(date).stream()
+
+        List<Room> cache = findRoomCacheOnly(date);
+        cache.addAll(CacheRoomHistoryRepository.getCacheRoom());
+
+        roomByRoomNo.addAll(cache.stream()
                 .filter(r -> r.getRoomNo().equals(roomNo)).collect(Collectors.toList()));
         return roomByRoomNo;
     }
@@ -92,14 +96,19 @@ public class CacheRoomHistoryRepository {
     public static List<Reservation> findReservationAll(LocalDate date) {
         List<Reservation> reservationAll = RoomHistoryRepository.findReservationAll(date);
         // TODO 순서 확인.
-        reservationAll.addAll(findReservationCacheOnly(LocalDate.now()));
+        reservationAll.addAll(findReservationCacheOnly(date));
+        reservationAll.addAll(CacheRoomHistoryRepository.getCacheReservation());
         return reservationAll;
     }
 
     public static List<Reservation> findReservationByRoomNo(LocalDate date, String roomNo) {
         List<Reservation> reservationByRoomNo = RoomHistoryRepository.findReservationByRoomNo(date, roomNo);
         // TODO 순서 확인.
-        reservationByRoomNo.addAll(findReservationCacheOnly(LocalDate.now()).stream()
+
+        List<Reservation> cache = findReservationCacheOnly(date);
+        cache.addAll(CacheRoomHistoryRepository.getCacheReservation());
+
+        reservationByRoomNo.addAll(cache.stream()
                 .filter(r -> r.getRoomNo().equals(roomNo)).collect(Collectors.toList()));
         return reservationByRoomNo;
     }
@@ -123,17 +132,11 @@ public class CacheRoomHistoryRepository {
                 stringBuffer.deleteCharAt(stringBuffer.length() - 1);
             }
             stringBuffer.append("]");
-        } catch (IOException e) {
-            return Collections.emptyList();
-        }
-
-        try {
-            List<Room> rooms = objectMapper.readValue(stringBuffer.toString(), new TypeReference<List<Room>>() {});
-
-            rooms.addAll(CacheRoomHistoryRepository.getCacheRoom());
-            return rooms;
+            return objectMapper.readValue(stringBuffer.toString(), new TypeReference<List<Room>>() {});
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
+        } catch (IOException e) {
+            return Collections.emptyList();
         }
     }
 
@@ -152,16 +155,12 @@ public class CacheRoomHistoryRepository {
                 stringBuffer1.deleteCharAt(stringBuffer1.length() - 1);
             }
             stringBuffer1.append("]");
-        } catch (IOException e) {
-            return Collections.emptyList();
-        }
 
-        try {
-            List<Reservation> reservations = objectMapper.readValue(stringBuffer1.toString(), new TypeReference<List<Reservation>>() {});
-            reservations.addAll(CacheRoomHistoryRepository.getCacheReservation());
-            return reservations;
+            return objectMapper.readValue(stringBuffer1.toString(), new TypeReference<List<Reservation>>() {});
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
+        } catch (IOException e) {
+            return Collections.emptyList();
         }
     }
 
@@ -204,29 +203,28 @@ public class CacheRoomHistoryRepository {
     }
 
     public synchronized static Config findConfig(LocalDate date) throws FileNotFoundException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
         Path path = Util.getRootPath(date, CONFIG_FILE_NAME);
 
         if (!Files.exists(path)) {
             throw new FileNotFoundException();
         }
 
-        try (
-                FileInputStream fis = new FileInputStream(path.toFile());
-                ObjectInputStream ois = new ObjectInputStream(fis);
-        ) {
-            Object object = ois.readObject();
-            if (object instanceof Config) {
-                return ((Config) object);
-            } else {
-                throw new FileNotFoundException();
-            }
-        } catch (Exception e) {
+        try {
+            String configJson = Files.readAllLines(path).stream().findFirst().orElseThrow(IOException::new);
+            return objectMapper.readValue(configJson, Config.class);
+        } catch (IOException e) {
             throw new FileNotFoundException();
         }
     }
 
     // TODO 원복
     public synchronized static Config saveConfig(int seqNo) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
         LocalDate date = LocalDate.now();
 
         Path path = Util.getRootPath(date, CONFIG_FILE_NAME);
@@ -240,11 +238,17 @@ public class CacheRoomHistoryRepository {
         maxSeqNo = seqNo + MAX_SEQ_NO;
 
         try (
-                FileOutputStream fis = new FileOutputStream(path.toFile());
-                ObjectOutputStream oos = new ObjectOutputStream(fis);
+                BufferedWriter bufferedWriter = Files.newBufferedWriter(path,
+                        StandardOpenOption.CREATE, StandardOpenOption.WRITE);
         ) {
-            oos.writeObject(new Config(maxSeqNo));
-            return new Config(maxSeqNo);
+            try {
+                Config config = new Config(maxSeqNo);
+                String configJson = objectMapper.writeValueAsString(config);
+                bufferedWriter.write(configJson);
+                return config;
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
         } catch (IOException e) {
             return new Config(MAX_SEQ_NO);
         }
@@ -276,10 +280,17 @@ public class CacheRoomHistoryRepository {
         }
 
         saveConfig(seqNo);
+        // TODO seqNo 변경?
+        System.out.println("seqNo : " + seqNo);
+        System.out.println("maxSeqNo : " + maxSeqNo);
         return maxSeqNo;
     }
 
     public synchronized static void cacheRoom() {
+        if (getCacheRoom().isEmpty()) {
+            return;
+        }
+
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
 
@@ -313,6 +324,10 @@ public class CacheRoomHistoryRepository {
     }
 
     public synchronized static void cacheReservation() {
+        if (getCacheReservation().isEmpty()) {
+            return;
+        }
+
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
 

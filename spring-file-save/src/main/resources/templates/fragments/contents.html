@@ -11,6 +11,7 @@
                     <div>
                         <th:block th:replace="~{fragments/fun-bottom::top-button}"></th:block>
                         <th:block th:replace="~{fragments/fun-bottom::bottom-button}"></th:block>
+                        <th:block th:replace="~{fragments/fun-bottom::home-button}"></th:block>
                         <th:block th:replace="~{fragments/fun-bottom::sort-button}"></th:block>
 
                     </div>
@@ -21,7 +22,7 @@
                     <div>
                         <th:block th:replace="~{fragments/fun-bottom::refresh-button}"></th:block>
                         <th:block th:replace="~{fragments/fun-bottom::debug-button}"></th:block>
-                        <th:block th:replace="~{fragments/fun-bottom::restart-button}"></th:block>
+                        <!--                        <th:block th:replace="~{fragments/fun-bottom::restart-button}"></th:block>-->
                         <!--                        <th:block th:replace="~{fragments/fun-bottom::reservation-append}"></th:block>-->
                     </div>
                 </div>
@@ -37,11 +38,11 @@
                 </th:block>
             </ul>
 
-<!--            <ul class="list-unstyled" id="contents__reservation-list">-->
-<!--                <th:block th:each="i : ${#numbers.sequence(count, 0)}">-->
-<!--                    <li th:id="|seq-no-${i}|" th:text="${{i}}"  class="visually-hidden"></li>-->
-<!--                </th:block>-->
-<!--            </ul>-->
+            <!--            <ul class="list-unstyled" id="contents__reservation-list">-->
+            <!--                <th:block th:each="i : ${#numbers.sequence(count, 0)}">-->
+            <!--                    <li th:id="|seq-no-${i}|" th:text="${{i}}"  class="visually-hidden"></li>-->
+            <!--                </th:block>-->
+            <!--            </ul>-->
         </div>
     </div>
 
@@ -74,7 +75,6 @@
 
 
     <script type="application/javascript" th:inline="javascript">
-
         (function () {
             let reservations = [[${reservations}]];
             let rooms = [[${rooms}]];
@@ -128,6 +128,27 @@
                 v.classList.add("flex-column-reverse");
             }
         })()
+    </script>
+
+    <script type="application/javascript" th:inline="javascript">
+        (function() {
+            let today = new Date()
+            let nextTime = new Date(today);
+            nextTime.setDate(today.getDate() + 1)
+            nextTime.setHours(0);
+            nextTime.setMinutes(10);
+            nextTime.setSeconds(0);
+
+            let milliseconds = nextTime - new Date();
+
+            console.debug(`Today : `, dateFormat(new Date()));
+            console.debug(`Next Day : `, dateFormat(nextTime));
+            console.debug(`Timer : `, milliseconds);
+
+            timer_val = setTimeout(() => {
+                window.location.assign("/monitoring/home");
+            }, Math.max(milliseconds, 1000 * 60 * 30));
+        })();
     </script>
 </th:block>>
 
