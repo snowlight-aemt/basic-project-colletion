@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="check-box">
+
+<div class="d-none d-lg-block position-relative">
+    <div class="position-absolute top-0 end-0" style="width: 6.5rem;">
+        <form id="index__form__pms_check">
+            <ul class="nav nav-pills nav-flush dropdown-menu text-center p-1">
+                <li class="nav-item py-1 px-1 border-bottom border-2 border-black">
+                    <input type="text" size="6" placeholder="RoomNo" class="text-center rounded-2" id="index__input__room-no" required/>
+                </li>
+                <li>
+                    <button id="index__input__pms_checkin" class="btn btn-sm btn-dark m-1">
+                        CheckIn
+                    </button> <br/>
+                </li>
+                <li class="pb-1 border-bottom border-2 border-black">
+                    <button id="index__input__pms_checkout" class="btn btn-sm btn-dark m-1">
+                        CheckOut
+                    </button> <br/>
+                </li>
+                <li>
+                    <button id="index__input__rms_inspection" class="btn btn-sm btn-dark m-1">
+                        Inspect
+                    </button>
+                </li>
+                <li>
+                    <button id="index__input__rms_cleaning" class="btn btn-sm btn-dark m-1">
+                        Cleaning
+                    </button>
+                </li>
+                <li>
+                    <button id="index__input__rms_cleaned" class="btn btn-sm btn-dark m-1">
+                        Cleaned
+                    </button>
+                </li>
+            </ul>
+        </form>
+    </div>
+</div>
+
+<th:block th:replace="~{fragments/util-script::date}"></th:block>
+<script type="application/javascript" th:inline="javascript">
+    (function (){
+        const $form = document.querySelector('#index__form__pms_check');
+        $form.onsubmit = (e) => e.preventDefault();
+
+        const $roomNo = document.querySelector('#index__input__room-no').value;
+
+        const $checkin = document.querySelector('#index__input__pms_checkin');
+        $checkin.onclick = function () {
+            const $roomNo = document.querySelector('#index__input__room-no').value;
+
+            let today = dateFormat(new Date());
+            const yearAndDate = today.split(" ")[0]
+            const year = yearAndDate.split("-")[0];
+            const _year = year.substring(2);
+            const month = yearAndDate.split("-")[1];
+            const date = yearAndDate.split("-")[2];
+
+            const time = today.split(" ")[1];
+            const hour = time.split(":")[0];
+            const minute = time.split(":")[1];
+
+            fetch('/monitoring/checkin', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json, text/plain',
+                    'Content-Type': 'application/json;charset=UTF-8'
+                },
+                body: JSON.stringify({
+                    room: $roomNo,
+                    // start: '24:11:25:17:41',
+                    // end: '24:11:30:12:00'
+                    start: `${_year}:${month}:${date}:${hour}:${minute}`,
+                    end: `${_year}:${month}:${date}:23:50`,
+                })
+            })
+                .then((response) => response.json())
+                .then((result) => console.log(result));
+        }
+        const $checkout = document.querySelector('#index__input__pms_checkout');
+        $checkout.onclick = function () {
+            const $roomNo = document.querySelector('#index__input__room-no').value;
+
+            let today = dateFormat(new Date());
+            const yearAndDate = today.split(" ")[0]
+            const year = yearAndDate.split("-")[0];
+            const _year = year.substring(2);
+            const month = yearAndDate.split("-")[1];
+            const date = yearAndDate.split("-")[2];
+
+            const time = today.split(" ")[1];
+            const hour = time.split(":")[0];
+            const minute = time.split(":")[1];
+
+            fetch('/monitoring/checkout', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json, text/plain',
+                    'Content-Type': 'application/json;charset=UTF-8'
+                },
+                body: JSON.stringify({
+                    room: $roomNo,
+                    // start: '24:11:25:17:41',
+                    // end: '24:11:30:12:00'
+                    start: `${_year}:${month}:${date}:${hour}:${minute}`,
+                    end: `${_year}:${month}:${date}:23:50`,
+                })
+            })
+                .then((response) => response.json())
+                .then((result) => console.log(result));
+        }
+
+        const $inspection = document.querySelector('#index__input__rms_inspection');
+        const $cleaning = document.querySelector('#index__input__rms_cleaning');
+        const $cleaned = document.querySelector('#index__input__rms_cleaned');
+
+        function getOnclick(roomState, roomCleanState) {
+            return function () {
+                const $roomNo = document.querySelector('#index__input__room-no').value;
+
+                fetch('/monitoring/clean', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json, text/plain',
+                        'Content-Type': 'application/json;charset=UTF-8'
+                    },
+                    body: JSON.stringify({
+                        roomState: roomState,
+                        roomCleanState: roomCleanState,
+                        roomNo: $roomNo
+                    })
+                })
+                    .then((response) => response.json())
+                    .then((result) => console.log(result));
+
+                // E("재실"),
+                // T("외출"),
+                // VACANCY("공실");
+
+                // G("청소 지시"),
+                // C("청소 중"),
+                // K("점검 완료"),
+                // I("청소 완료"),
+                // W("청소 대기 (PMS 용)");
+            };
+        }
+
+        $cleaning.onclick = getOnclick('E', 'C');
+        $inspection.onclick = getOnclick('E', 'K');
+        $cleaned.onclick = getOnclick('E', 'I');
+
+    })();
+</script>
+
+</th:block>
+
+</html>

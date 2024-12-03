@@ -7,19 +7,21 @@ import com.sanhait.springfilesave.file.dto.Reservation;
 import com.sanhait.springfilesave.file.dto.ReservationDto;
 import com.sanhait.springfilesave.file.dto.Room;
 import com.sanhait.springfilesave.file.dto.RoomDto;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.lang.management.ManagementFactory;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -189,5 +191,76 @@ public class FileController {
         } catch (Exception e) {
             log.error("TEST room");
         }
+    }
+
+    @PostMapping("/checkin")
+    @ResponseBody
+    public String checkin(@RequestBody TestCheckDto date) {
+        RestTemplate restTemplate = new RestTemplateBuilder().setConnectTimeout(Duration.ofMillis(2000L)).setReadTimeout(Duration.ofMillis(2000L)).build();
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<?> httpEntity = new HttpEntity<>(null, httpHeaders);
+
+        UriComponents url = UriComponentsBuilder.newInstance()
+                .scheme("https").host("4f3ce350-141c-45f8-8ff3-9c5e2758110d.mock.pstmn.io")
+                .path("/{path}")
+                .query("room={room}").query("start={start}").query("start={start}")
+                .buildAndExpand("api/room/checkin",
+                        date.getRoom(), date.getStart(), date.getEnd());
+
+        ResponseEntity<String> responseEntity = restTemplate.exchange(url.toUriString(),
+                HttpMethod.PUT, httpEntity, String.class);
+
+        return responseEntity.getBody();
+    }
+
+    @PostMapping("/checkout")
+    @ResponseBody
+    public String checkout(@RequestBody TestCheckDto date) {
+        RestTemplate restTemplate = new RestTemplateBuilder().setConnectTimeout(Duration.ofMillis(2000L)).setReadTimeout(Duration.ofMillis(2000L)).build();
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<?> httpEntity = new HttpEntity<>(null, httpHeaders);
+
+        UriComponents url = UriComponentsBuilder.newInstance()
+                .scheme("https").host("4f3ce350-141c-45f8-8ff3-9c5e2758110d.mock.pstmn.io")
+                .path("/{path}")
+                .query("room={room}").query("start={start}").query("end={end}")
+                .buildAndExpand("api/room/checkout",
+                        date.getRoom(), date.getStart(), date.getEnd());
+
+        ResponseEntity<String> responseEntity = restTemplate.exchange(url.toUriString(),
+                HttpMethod.PUT, httpEntity, String.class);
+
+        return responseEntity.getBody();
+    }
+
+
+    @PostMapping("/clean")
+    @ResponseBody
+    public String clean(@RequestBody TestCleanDto date) {
+        RestTemplate restTemplate = new RestTemplateBuilder().setConnectTimeout(Duration.ofMillis(2000L)).setReadTimeout(Duration.ofMillis(2000L)).build();
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<?> httpEntity = new HttpEntity<>(null, httpHeaders);
+
+//        http://localhost:11601/v1/updateRoomStatus?roomState=&roomCleanState=K&roomNo=0412
+        UriComponents url = UriComponentsBuilder.newInstance()
+                .scheme("https").host("localhost:8080")
+                .path("/{path}")
+                .query("roomState={roomState}").query("roomCleanState={roomCleanState}").query("roomNo={roomNo}")
+                .buildAndExpand("v1/updateRoomStatus",
+                        date.getRoomState(), date.getRoomCleanState(), date.getRoomNo());
+
+        ResponseEntity<String> responseEntity = restTemplate.exchange(url.toUriString(),
+                HttpMethod.PUT, httpEntity, String.class);
+
+        return responseEntity.getBody();
     }
 }
